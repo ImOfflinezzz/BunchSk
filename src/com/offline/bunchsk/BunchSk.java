@@ -120,14 +120,14 @@ public class BunchSk extends JavaPlugin {
                                 Skript.registerCondition(c, ro.Syntaxes());    
                                 condcount++;
                                 break;
-	             case "EVENT":
-	                Skript.registerEvent(ro.Name(), SimpleEvent.class, c, ro.Syntaxes());
-		evtcount++;
-		break;
-	              case "EXPRESSION":
-		Skript.registerExpression(c,ro.ExprClass(),ro.ExprType(),ro.Syntaxes);
-		exprcount++;
-		break;
+	                    case "EVENT":
+	                        Skript.registerEvent(ro.Name(), SimpleEvent.class, c, ro.Syntaxes());
+		                evtcount++;
+		                break;
+	                    case "EXPRESSION":
+	            	        Skript.registerExpression(c,ro.ExprClass(),ro.ExprType(),ro.Syntaxes);
+		                exprcount++;
+		                break;
                         }
                 }    
             }    
