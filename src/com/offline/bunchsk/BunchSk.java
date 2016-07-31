@@ -30,6 +30,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.Bukkit;
 
 public class BunchSk extends JavaPlugin {   
     
@@ -102,16 +103,32 @@ public class BunchSk extends JavaPlugin {
                 if(c.isAnnotationPresent(RegisterOptions.class)){
                     Annotation ann = c.getAnnotation(RegisterOptions.class);
                     RegisterOptions ro = (RegisterOptions) ann;
-                    switch (ro.RegType()) {
-                        case "EFFECT":
-                            Skript.registerEffect(c, ro.Syntaxes());
-                            effcount++;
-                            break;
-                        case "CONDITION":
-                            Skript.registerCondition(c, ro.Syntaxes());    
-                            condcount++;
-                            break;
+                    boolean checkver = true;
+                    if (ro.Versions()!=null){
+                        checkver = false;
+                        for (String v : ro.Versions())
+                            if (v!="Any" && Bukkit.getServer().getBukkitVersion().contains(v)) checkver=true;
                     }
+                    
+                    if (checkver = true && ro.PluginDepend()!=null && ro.PluginDepend()!="none" || Bukkit.getPluginManager().getPlugin(ro.PluginDepend()) == null) return;
+                        switch (ro.RegType()) {
+                            case "EFFECT":
+                                Skript.registerEffect(c, ro.Syntaxes());
+                                effcount++;
+                                break;
+                            case "CONDITION":
+                                Skript.registerCondition(c, ro.Syntaxes());    
+                                condcount++;
+                                break;
+	             case "EVENT":
+	                Skript.registerEvent(ro.Name(), SimpleEvent.class, c, ro.Syntaxes());
+		evtcount++;
+		break;
+	              case "EXPRESSION":
+		Skript.registerExpression(c,ro.ExprClass(),ro.ExprType(),ro.Syntaxes);
+		exprcount++;
+		break;
+                        }
                 }    
             }    
         }
