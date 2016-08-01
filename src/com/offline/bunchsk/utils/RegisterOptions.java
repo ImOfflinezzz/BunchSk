@@ -30,7 +30,6 @@ public @interface RegisterOptions{
     
     String Name() default "BunchSk something";
     String RegType() default "EFFECT";
-    Class RegClass() default EffBroadcastPerm.class;
     String[] Versions() default "any";
     String PluginDepend() default "none";
     String[] Syntaxes() default "do something";
