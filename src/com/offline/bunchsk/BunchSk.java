@@ -125,7 +125,7 @@ public class BunchSk extends JavaPlugin {
 		                evtcount++;
 		                break;
 	                    case "EXPRESSION":
-	            	        Skript.registerExpression(c,ro.ExprClass(),ro.ExprType(),ro.Syntaxes);
+	            	        Skript.registerExpression(c,ro.ExprClass(),ro.ExprType(),ro.Syntaxes());
 		                exprcount++;
 		                break;
                         }
