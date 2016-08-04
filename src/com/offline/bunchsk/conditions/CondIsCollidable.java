@@ -17,7 +17,7 @@ import org.bukkit.event.Event;
 @RegisterOptions(
         Name="Entity is collidable",
         RegType="CONDITION",
-        RegClass=CondIsCollidable.class,
+        Versions={"1.9","1.10"},
         Syntaxes={"%entity% is collidable", "%entity% isn't collidable"})
 
 public class CondIsCollidable extends Condition {

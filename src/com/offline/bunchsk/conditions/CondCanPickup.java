@@ -17,7 +17,6 @@ import org.bukkit.event.Event;
 @RegisterOptions(
         Name="Can Pickup",
         RegType="CONDITION",
-        RegClass=CondCanPickup.class,
         Syntaxes={"%entity% can pickup [items]", "%entity% can't pickup [items]"})
 
 public class CondCanPickup extends Condition {

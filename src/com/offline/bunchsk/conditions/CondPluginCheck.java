@@ -20,7 +20,6 @@ import org.bukkit.Bukkit;
 @RegisterOptions(
         Name="Plugin check",
         RegType="CONDITION",
-        RegClass=CondPluginCheck.class,
         Syntaxes={"%string% is enable", "%string% is disabled"})
 public class CondPluginCheck extends Condition {
 
