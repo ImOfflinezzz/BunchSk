@@ -28,10 +28,14 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RegisterOptions{
     
+    public enum RegisterType{
+        EFFECT,EXPRESSION,CONDITION,EVENT
+    }
+    
     String Name() default "BunchSk something";
     String RegType() default "EFFECT";
-    String[] Versions() default "any";
-    String PluginDepend() default "none";
+    String[] Versions() default "Any";
+    String PluginDepend() default "None";
     String[] Syntaxes() default "do something";
     Class ExprClass() default String.class;
     ExpressionType ExprType() default ExpressionType.SIMPLE;
