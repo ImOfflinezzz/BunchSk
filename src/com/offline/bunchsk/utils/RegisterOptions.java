@@ -34,7 +34,6 @@ public @interface RegisterOptions{
     
     String Name() default "BunchSk something";
     String RegType() default "EFFECT";
-    String[] Versions() default "Any";
     String PluginDepend() default "None";
     String[] Syntaxes() default "do something";
     Class ExprClass() default String.class;
