@@ -15,7 +15,6 @@ import com.offline.bunchsk.utils.RegisterOptions.RegisterType;
 @RegisterOptions(
         Name="Broadcast to players with perm",
         RegType="EFFECT",
-        RegClass=EffBroadcastPerm.class,
         Syntaxes="broad[cast] %string% to [all] players with perm[ission] %string%")
 
 public class EffBroadcastPerm extends Effect {

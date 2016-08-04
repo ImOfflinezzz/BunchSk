@@ -18,7 +18,6 @@ import com.offline.bunchsk.utils.RegisterOptions.RegisterType;
 @RegisterOptions(
         Name="Surface player ti highest place",
         RegType="EFFECT",
-        RegClass=EffSurfaceHigh.class,
         Syntaxes="surf[ace] %player% to [the] near[est] [loc[ation]]")
 
 public class EffSurfaceNear extends Effect {
