@@ -16,7 +16,6 @@ import com.offline.bunchsk.utils.RegisterOptions;
 @RegisterOptions(
         Name="Make players spectate entities",
         RegType="EFFECT",
-        Versions={"1.9","1.10"},
         Syntaxes="make %player% spectate %entity%")
 
 public class EffMakeSpectate extends Effect{
