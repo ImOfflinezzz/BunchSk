@@ -95,6 +95,7 @@ public class BunchSk extends JavaPlugin {
         int evtcount = 0;
         int condcount = 0;
         
+        
         System.out.println("BunchSk registering stuff");
         JavaPlugin plugin = (JavaPlugin) getServer().getPluginManager().getPlugin("BunchSk");
         Method getFileMethod = JavaPlugin.class.getDeclaredMethod("getFile");
@@ -108,12 +109,6 @@ public class BunchSk extends JavaPlugin {
                 if(c.isAnnotationPresent(RegisterOptions.class)){
                     Annotation ann = c.getAnnotation(RegisterOptions.class);
                     RegisterOptions ro = (RegisterOptions) ann;
-                    boolean checkver = true;
-                    if (!ro.Versions().toString().contains("Any")){
-                        checkver = false;
-                        for (String v : ro.Versions())
-                            if (v!="Any" && Bukkit.getServer().getBukkitVersion().contains(v)) checkver=true;
-                    }
                     int asd = 1;
                     if (ro.PluginDepend()!="None" && Bukkit.getPluginManager().getPlugin(ro.PluginDepend()) == null) asd=0;
                     if (asd==0){
