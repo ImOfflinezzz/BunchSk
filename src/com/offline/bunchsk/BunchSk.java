@@ -19,18 +19,21 @@ import com.offline.bunchsk.effects.EffPickupState;
 import com.offline.bunchsk.conditions.CondCanPickup;*/
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.lang.util.SimpleEvent;
 import com.offline.bunchsk.utils.ClassFinder;
 import com.offline.bunchsk.utils.RegisterOptions;
+import java.io.Console;
 import java.io.File;
 import java.io.IOException;
+import static java.lang.System.console;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class BunchSk extends JavaPlugin {   
     
@@ -40,7 +43,8 @@ public class BunchSk extends JavaPlugin {
         try {    
             registerElements();
         } catch (IOException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            /*Logger.getLogger(BunchSk.class.getName()).log(Level.SEVERE, null, ex);*/
+            Logger.getLogger(BunchSk.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("BunchSk couldn't register stuff");
         }
         
         }
@@ -91,6 +95,7 @@ public class BunchSk extends JavaPlugin {
         int evtcount = 0;
         int condcount = 0;
         
+        System.out.println("BunchSk registering stuff");
         JavaPlugin plugin = (JavaPlugin) getServer().getPluginManager().getPlugin("BunchSk");
         Method getFileMethod = JavaPlugin.class.getDeclaredMethod("getFile");
         getFileMethod.setAccessible(true);
@@ -104,34 +109,36 @@ public class BunchSk extends JavaPlugin {
                     Annotation ann = c.getAnnotation(RegisterOptions.class);
                     RegisterOptions ro = (RegisterOptions) ann;
                     boolean checkver = true;
-                    if (ro.Versions()!=null){
+                    if (!ro.Versions().toString().contains("Any")){
                         checkver = false;
                         for (String v : ro.Versions())
                             if (v!="Any" && Bukkit.getServer().getBukkitVersion().contains(v)) checkver=true;
                     }
-                    
-                    if (checkver = true && ro.PluginDepend()!=null && ro.PluginDepend()!="none" || Bukkit.getPluginManager().getPlugin(ro.PluginDepend()) == null) return;
+                    int asd = 1;
+                    if (ro.PluginDepend()!="None" && Bukkit.getPluginManager().getPlugin(ro.PluginDepend()) == null) asd=0;
+                    if (asd==0){
                         switch (ro.RegType()) {
                             case "EFFECT":
                                 Skript.registerEffect(c, ro.Syntaxes());
                                 effcount++;
                                 break;
                             case "CONDITION":
-                                Skript.registerCondition(c, ro.Syntaxes());    
+                                Skript.registerCondition(c, ro.Syntaxes());
                                 condcount++;
                                 break;
-	                    case "EVENT":
+                            case "EVENT":
 	                        Skript.registerEvent(ro.Name(), SimpleEvent.class, c, ro.Syntaxes());
 		                evtcount++;
 		                break;
 	                    case "EXPRESSION":
 	            	        Skript.registerExpression(c,ro.ExprClass(),ro.ExprType(),ro.Syntaxes());
 		                exprcount++;
-		                break;
+                                break;
                         }
+                    }
                 }    
-            }    
+            }   
+            System.out.println("BunchSk successfully registered "+effcount+" effects, "+exprcount+" expressions, "+evtcount+" events, "+condcount+" conditions");
         }
-        System.out.println("BunchSk successfully registered "+effcount+" effects, "+exprcount+" expressions, "+evtcount+" events, "+condcount+" conditions");
-        }
+    }
 }
