@@ -14,9 +14,9 @@ import ch.njol.util.Kleenean;
 import com.offline.bunchsk.utils.RegisterOptions;
 
 @RegisterOptions(
-        Name="Make players spectate entities",
-        RegType="EFFECT",
-        Syntaxes="make %player% spectate %entity%")
+	Name="Make players spectate entities",
+	RegType="EFFECT",
+	Syntaxes="make %player% spectate %entity%")
 
 public class EffMakeSpectate extends Effect{
 	private static Expression<Player> player;
@@ -37,9 +37,9 @@ public class EffMakeSpectate extends Effect{
 	@Override
 	protected void execute(Event e) {
     	Player player = EffMakeSpectate.player.getSingle(e);
-    	if (player.getGameMode() != GameMode.SPECTATOR){
+    	if (player.getGameMode() != GameMode.SPECTATOR)
     		player.setGameMode(GameMode.SPECTATOR);
-    	}
+
     	player.setSpectatorTarget(EffMakeSpectate.entity.getSingle(e));
 	}
 

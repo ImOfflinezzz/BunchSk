@@ -1,4 +1,4 @@
-package com.offline.bunchsk.expressions;
+package com.offline.bunchsk.expression;
 
 import javax.annotation.Nullable;
 
@@ -13,11 +13,11 @@ import ch.njol.util.Kleenean;
 import com.offline.bunchsk.utils.RegisterOptions;
 
 @RegisterOptions(
-        Name="Rows of inventory",
-        RegType="EXPRESSION",
-        Syntaxes="rows of %inventory%",
-        ExprType=ExpressionType.PROPERTY,
-        ExprClass=Number.class)
+	Name="Rows of inventory",
+	RegType="EXPRESSION",
+	Syntaxes="rows of %inventory%",
+	ExprType=ExpressionType.PROPERTY,
+	ExprClass=Number.class)
 
 public class ExprRowsOfInventory extends SimpleExpression<Number>{
 	private Expression<Inventory> inv;

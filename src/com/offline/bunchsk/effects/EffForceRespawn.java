@@ -12,11 +12,12 @@ import ch.njol.util.Kleenean;
 import com.offline.bunchsk.utils.RegisterOptions;
 
 @RegisterOptions(
-        Name="Force respawn player",
-        RegType="EFFECT",
-        Syntaxes="[exert|bunch] force (respawn|revive) %player%")
+	Name="Force respawn player",
+	RegType="EFFECT",
+	Syntaxes="[exert|bunch] force (respawn|revive) %player%")
 
-public class EffForceRespawn extends Effect{
+public class EffForceRespawn extends Effect {
+
 	private static Expression<Player> player;
         
 	@SuppressWarnings("unchecked")

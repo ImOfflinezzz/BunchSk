@@ -1,4 +1,4 @@
-package com.offline.bunchsk.expressions;
+package com.offline.bunchsk.expression;
 
 import javax.annotation.Nullable;
 
@@ -11,22 +11,19 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
-import ch.njol.skript.lang.Variable;
 import ch.njol.skript.lang.util.SimpleExpression;
-import ch.njol.skript.util.Timespan;
-import ch.njol.skript.variables.Variables;
-import ch.njol.skript.variables.VariablesStorage;
 import ch.njol.util.Kleenean;
 import com.offline.bunchsk.utils.RegisterOptions;
 
 @RegisterOptions(
-        Name="Dyed item",
-        RegType="EXPRESSION",
-        Syntaxes="dyed %itemstack% with %number%, %number%, %number%",
-        ExprType=ExpressionType.SIMPLE,
-        ExprClass=ItemStack.class)
+	Name="Dyed item",
+	RegType="EXPRESSION",
+	Syntaxes="dyed %itemstack% with %number%, %number%, %number%",
+	ExprType=ExpressionType.SIMPLE,
+	ExprClass=ItemStack.class)
 
-public class ExprDyedItemStack extends SimpleExpression<ItemStack>{
+public class ExprDyedItemStack extends SimpleExpression<ItemStack> {
+
     private Expression<ItemStack> item;
     private Expression<Number> numb1;
     private Expression<Number> numb2;
@@ -59,11 +56,13 @@ public class ExprDyedItemStack extends SimpleExpression<ItemStack>{
 	@Override
 	@javax.annotation.Nullable
 	protected ItemStack[] get(Event e) {
-		if (item.getSingle(e) != null && numb1.getSingle(e) != null && numb2.getSingle(e) != null && numb3.getSingle(e) != null){
+		if (item.getSingle(e) != null && numb1.getSingle(e) != null && numb2.getSingle(e) != null && numb3.getSingle(e) != null) {
+
 			if (item.getSingle(e).getType() == Material.LEATHER_BOOTS 
 					|| item.getSingle(e).getType() == Material.LEATHER_CHESTPLATE 
 					|| item.getSingle(e).getType() == Material.LEATHER_HELMET 
-					|| item.getSingle(e).getType() == Material.LEATHER_LEGGINGS){
+					|| item.getSingle(e).getType() == Material.LEATHER_LEGGINGS) {
+
 				ItemStack litem = new ItemStack(item.getSingle(e).getType(), 1);
 	    		LeatherArmorMeta lch = (LeatherArmorMeta)item.getSingle(e).getItemMeta();
 	    		lch.setColor(Color.fromBGR(numb1.getSingle(e).intValue(), numb2.getSingle(e).intValue(), numb3.getSingle(e).intValue()));

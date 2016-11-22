@@ -1,10 +1,8 @@
-package com.offline.bunchsk.expressions;
+package com.offline.bunchsk.expression;
 
 import javax.annotation.Nullable;
 
 import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
 import ch.njol.skript.lang.Expression;

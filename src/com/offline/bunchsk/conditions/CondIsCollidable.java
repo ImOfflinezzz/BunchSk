@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.offline.bunchsk.conditions;
 
 import ch.njol.skript.lang.Condition;
@@ -28,7 +22,7 @@ public class CondIsCollidable extends Condition {
     public boolean check(Event event) {
         LivingEntity e = this.e.getSingle(event);
         if (e == null) return false;
-        Boolean b = matchedPattern == 0 ? false : true;
+        Boolean b = matchedPattern != 0;
         if (e.isCollidable()){
             b = !b;
         }

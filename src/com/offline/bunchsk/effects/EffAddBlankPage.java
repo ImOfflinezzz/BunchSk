@@ -14,14 +14,16 @@ import ch.njol.util.Kleenean;
 import com.offline.bunchsk.utils.RegisterOptions;
 
 @RegisterOptions(
-        Name="Add page to book",
-        RegType="EFFECT",
-        Syntaxes="add %integer% page[s] to %itemstack% [with template %string%]")
+	Name="Add page to book",
+	RegType="EFFECT",
+	Syntaxes="add %integer% page[s] to %itemstack% [with template %string%]")
 
-public class EffAddBlankPage extends Effect{
+public class EffAddBlankPage extends Effect {
+
 	private Expression<Integer> EXPRpages;
 	private Expression<ItemStack> EXPRbook;
-        private Expression<String> PageTemp;
+	private Expression<String> PageTemp;
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(Expression<?>[] expr, int arg1, Kleenean arg2, ParseResult arg3) {
@@ -38,13 +40,17 @@ public class EffAddBlankPage extends Effect{
 
 	@Override
 	protected void execute(Event e) {
-		if (EXPRbook.getSingle(e).getType() == Material.WRITTEN_BOOK){
+		if (EXPRbook.getSingle(e).getType() == Material.WRITTEN_BOOK) {
+
 			BookMeta book = (BookMeta) EXPRbook.getSingle(e).getItemMeta();
 			String text = "";
-                        if (PageTemp != null) text=PageTemp.getSingle(e);
-			for(int i=0 ; i < EXPRpages.getSingle(e) ;i++){
+
+			if (PageTemp != null)
+				text=PageTemp.getSingle(e);
+
+			for(int i=0 ; i < EXPRpages.getSingle(e) ;i++)
 				book.addPage(text);
-			}
+
 			EXPRbook.getSingle(e).setItemMeta(book);
 		}
 	}

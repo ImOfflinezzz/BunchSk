@@ -14,12 +14,13 @@ import com.offline.bunchsk.utils.RegisterOptions;
 import com.offline.bunchsk.utils.RegisterOptions.RegisterType;
 
 @RegisterOptions(
-        Name="Surface player ti highest place",
-        RegType="EFFECT",
-        Syntaxes="surf[ace] %player% to [the] high[est] [loc[ation]]")
+    Name="Surface player ti highest place",
+    RegType="EFFECT",
+    Syntaxes="surf[ace] %player% to [the] high[est] [loc[ation]]")
 
 public class EffSurfaceHigh extends Effect {
-        private Expression<Player> player;
+
+    private Expression<Player> player;
         
 	@Override
 	public boolean init(Expression<?>[] expr, int matchedPattern, Kleenean paramKleenean, ParseResult paramParseResult) {
@@ -32,22 +33,30 @@ public class EffSurfaceHigh extends Effect {
 		return "surface player to highest";
 	}
         
-	@Override
-	protected void execute(Event e) {
-                Location loc = player.getSingle(e).getLocation();
-                Location loca = loc;
-                loca.setY(256);
-                int locY = loc.getBlockY();
-                do {
-                        loca.setY(loca.getY()-1);
-                        if (loca.getBlock().getType() == Material.AIR){
-                            loca.setY(loca.getY()-1);
-                            if (loca.getBlock().getType() != Material.AIR){
-                                loca.setY(loca.getY() + 1);
-                                player.getSingle(e).teleport(loca);
-                                break;
-                            }
-                        }
-                } while (locY != loc.getBlockY());
-	}
+
+    @Override
+    protected void execute(Event e) {
+        Location location = player.getSingle(e).getLocation();
+        Location loc = location;
+        while (loc.getY() < 256) {
+            loc.subtract(0, 1, 0);
+
+            if(loc.getBlock().getType() != Material.AIR) {
+                loc.subtract(0, 1, 0);
+
+                if(loc.getBlock().getType() == Material.AIR) {
+
+                    loc.subtract(0, 1, 0);
+
+                    if(loc.getBlock().getType() == Material.AIR) {
+                        loc.add(0, 1, 0);
+                        player.getSingle(e).teleport(loc);
+                        break;
+                    }
+
+
+                }
+            }
+        }
+    }
 }

@@ -6,20 +6,19 @@ import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
 import javax.annotation.Nullable;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
 import com.offline.bunchsk.utils.RegisterOptions;
-import com.offline.bunchsk.utils.RegisterOptions.RegisterType;
 
 @RegisterOptions(
-        Name="Broadcast to players with perm",
-        RegType="EFFECT",
-        Syntaxes="broad[cast] %string% to [all] players with perm[ission] %string%")
+	Name="Broadcast to players with perm",
+	RegType="EFFECT",
+	Syntaxes="broad[cast] %string% to [all] players with perm[ission] %string%")
 
 public class EffBroadcastPerm extends Effect {
-        private Expression<String> text;
-        private Expression<String> perm;
+
+	private Expression<String> text;
+	private Expression<String> perm;
         
 	@Override
 	public boolean init(Expression<?>[] expr, int matchedPattern, Kleenean paramKleenean, ParseResult paramParseResult) {
@@ -35,10 +34,6 @@ public class EffBroadcastPerm extends Effect {
         
 	@Override
 	protected void execute(Event e) {
-                for (Player p: Bukkit.getServer().getOnlinePlayers()){
-                    if (p.hasPermission(perm.getSingle(e))){
-                        p.sendMessage(text.getSingle(e));
-                    }
-                }
+		Bukkit.getServer().getOnlinePlayers().stream().filter(p -> p.hasPermission(perm.getSingle(e))).forEach(p -> p.sendMessage(text.getSingle(e)));
 	}
 }

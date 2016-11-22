@@ -1,4 +1,4 @@
-package com.offline.bunchsk.expressions;
+package com.offline.bunchsk.expression;
 
 import ch.njol.skript.classes.Changer;
 import ch.njol.skript.classes.Changer.ChangeMode;
@@ -15,14 +15,16 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
 @RegisterOptions(
-        Name="Title of book",
-        RegType="EXPRESSION",
-        Syntaxes="[book] title of %itemstack%",
-        ExprType=ExpressionType.PROPERTY,
-        ExprClass=String.class)
+	Name="Title of book",
+	RegType="EXPRESSION",
+	Syntaxes="[book] title of %itemstack%",
+	ExprType=ExpressionType.PROPERTY,
+	ExprClass=String.class)
 
-public class ExprBookTitle extends SimpleExpression<String>{
+public class ExprBookTitle extends SimpleExpression<String> {
+
 	private Expression<ItemStack> item;
+
 	@Override
 	public Class<? extends String> getReturnType() {
 		return String.class;

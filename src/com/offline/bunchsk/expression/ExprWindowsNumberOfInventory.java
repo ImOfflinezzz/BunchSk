@@ -1,4 +1,4 @@
-package com.offline.bunchsk.expressions;
+package com.offline.bunchsk.expression;
 
 import javax.annotation.Nullable;
 
@@ -11,17 +11,18 @@ import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import com.offline.bunchsk.utils.RegisterOptions;
-import org.bukkit.entity.Player;
 
 @RegisterOptions(
-        Name="Windows of inventory",
-        RegType="EXPRESSION",
-        Syntaxes="[number of] windows of %inventory%",
-        ExprType=ExpressionType.PROPERTY,
-        ExprClass=Number.class)
+	Name="Windows of inventory",
+	RegType="EXPRESSION",
+	Syntaxes="[number of] windows of %inventory%",
+	ExprType=ExpressionType.PROPERTY,
+	ExprClass=Number.class)
 
-public class ExprWindowsNumberOfInventory extends SimpleExpression<Number>{
+public class ExprWindowsNumberOfInventory extends SimpleExpression<Number> {
+
 	private Expression<Inventory> inv;
+
 	@Override
 	public Class<? extends Number> getReturnType() {
 		return Number.class;

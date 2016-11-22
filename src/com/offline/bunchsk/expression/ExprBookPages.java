@@ -1,4 +1,4 @@
-package com.offline.bunchsk.expressions;
+package com.offline.bunchsk.expression;
 
 import org.bukkit.event.Event;
 
@@ -19,14 +19,16 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
 @RegisterOptions(
-        Name="Pages of book",
-        RegType="EXPRESSION",
-        Syntaxes="[all] [book] pages of %itemstack%",
-        ExprType=ExpressionType.PROPERTY,
-        ExprClass=String.class)
+	Name="Pages of book",
+	RegType="EXPRESSION",
+	Syntaxes="[all] [book] pages of %itemstack%",
+	ExprType=ExpressionType.PROPERTY,
+	ExprClass=String.class)
 
-public class ExprBookPages extends SimpleExpression<String>{
+public class ExprBookPages extends SimpleExpression<String> {
+
 	private Expression<ItemStack> item;
+
 	@Override
 	public Class<? extends String> getReturnType() {
 		return String.class;

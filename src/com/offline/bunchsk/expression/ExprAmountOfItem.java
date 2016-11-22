@@ -1,4 +1,4 @@
-package com.offline.bunchsk.expressions;
+package com.offline.bunchsk.expression;
 
 import javax.annotation.Nullable;
 import org.bukkit.event.Event;
@@ -12,14 +12,16 @@ import ch.njol.util.Kleenean;
 import com.offline.bunchsk.utils.RegisterOptions;
 
 @RegisterOptions(
-        Name="Amount of items",
-        RegType="EXPRESSION",
-            Syntaxes="amount of items in %itemstack%",
-        ExprType=ExpressionType.SIMPLE,
-        ExprClass=Number.class)
+	Name="Amount of items",
+	RegType="EXPRESSION",
+	Syntaxes="amount of items in %itemstack%",
+	ExprType=ExpressionType.SIMPLE,
+	ExprClass=Number.class)
 
-public class ExprAmountOfItem extends SimpleExpression<Number>{
+public class ExprAmountOfItem extends SimpleExpression<Number> {
+
 	private Expression<ItemStack> item;
+
 	@Override
 	public Class<? extends Number> getReturnType() {
 		return Number.class;
@@ -45,7 +47,7 @@ public class ExprAmountOfItem extends SimpleExpression<Number>{
 	@Override
 	@javax.annotation.Nullable
 	protected Number[] get(Event e) {
-		if (item.getSingle(e) != null){
+		if (item.getSingle(e) != null) {
 			return new Number[] {item.getSingle(e).getAmount()};
 		} else {
 			return new Number[] {0};

@@ -1,4 +1,4 @@
-package com.offline.bunchsk.expressions;
+package com.offline.bunchsk.expression;
 
 import ch.njol.skript.classes.Changer;
 import javax.annotation.Nullable;
@@ -16,14 +16,16 @@ import com.offline.bunchsk.utils.RegisterOptions;
 
 
 @RegisterOptions(
-        Name="Custom name of entity",
-        RegType="EXPRESSION",
-        Syntaxes="custom name of %livingentities%",
-        ExprType=ExpressionType.SIMPLE,
-        ExprClass=String.class)
+	Name="Custom name of entity",
+	RegType="EXPRESSION",
+	Syntaxes="custom name of %livingentities%",
+	ExprType=ExpressionType.SIMPLE,
+	ExprClass=String.class)
 
-public class ExprCustomNameOfEntity extends SimpleExpression<String>{
+public class ExprCustomNameOfEntity extends SimpleExpression<String> {
+
 	private Expression<LivingEntity> entity;
+
 	@Override
 	public Class<? extends String> getReturnType() {
 		return String.class;
@@ -46,26 +48,28 @@ public class ExprCustomNameOfEntity extends SimpleExpression<String>{
 		return null;
 	}
         
-        @Override
-	public void change(Event e, Object[] delta, Changer.ChangeMode mode){
-		if (mode == Changer.ChangeMode.SET){
-                    entity.getSingle(e).setCustomName((String) delta[0]);
-		} else if (mode == Changer.ChangeMode.DELETE){
-                    entity.getSingle(e).setCustomName("");
-                }
+	@Override
+	public void change(Event e, Object[] delta, Changer.ChangeMode mode) {
+		if (mode == Changer.ChangeMode.SET)
+			entity.getSingle(e).setCustomName((String) delta[0]);
+		else if (mode == Changer.ChangeMode.DELETE)
+			entity.getSingle(e).setCustomName("");
+
 	}
 	@SuppressWarnings("unchecked")
 	@Override
 	public Class<?>[] acceptChange(final Changer.ChangeMode mode) {
+
 		if (mode == Changer.ChangeMode.SET||mode == Changer.ChangeMode.DELETE)
 			return CollectionUtils.array(String.class);
 		return null;
-        }
+	}
 	@Override
 	protected String[] get(Event e) {
-		if (entity.getSingle(e) != null){
+
+		if (entity.getSingle(e) != null)
 			return new String[] {entity.getSingle(e).getCustomName()};
-		}
+
 		return new String[] {};
 	}
 }

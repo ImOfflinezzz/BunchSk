@@ -1,4 +1,4 @@
-package com.offline.bunchsk.expressions;
+package com.offline.bunchsk.expression;
 
 import javax.annotation.Nullable;
 
@@ -14,11 +14,11 @@ import ch.njol.util.Kleenean;
 import com.offline.bunchsk.utils.RegisterOptions;
 
 @RegisterOptions(
-        Name="Viewers of inventory",
-        RegType="EXPRESSION",
-            Syntaxes="[number of] viewers of %inventory%",
-        ExprType=ExpressionType.PROPERTY,
-        ExprClass=Player.class)
+	Name="Viewers of inventory",
+	RegType="EXPRESSION",
+	Syntaxes="[number of] viewers of %inventory%",
+	ExprType=ExpressionType.PROPERTY,
+	ExprClass=Player.class)
 
 public class ExprViewersOfInventory extends SimpleExpression<Player>{
 	private Expression<Inventory> inventory;
@@ -47,9 +47,10 @@ public class ExprViewersOfInventory extends SimpleExpression<Player>{
 	@Override
 	@javax.annotation.Nullable
 	protected Player[] get(Event e) {
-		if (inventory.getSingle(e) != null){
-			Player[] list = inventory.getSingle(e).getViewers().toArray(new Player[inventory.getSingle(e).getViewers().size()]);
-			return list;
+		if (inventory.getSingle(e) != null) {
+			//return inventory.getSingle(e).getViewers().toArray(new Player[inventory.getSingle(e).getViewers().size()]);
+			return (Player[]) inventory.getSingle(e).getViewers().toArray();
+			//return list;
 		}
 		return new Player[] {null};
 		

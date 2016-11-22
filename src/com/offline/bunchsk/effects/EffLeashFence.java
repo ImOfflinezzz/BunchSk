@@ -16,14 +16,18 @@ import ch.njol.util.Kleenean;
 import com.offline.bunchsk.utils.RegisterOptions;
 
 @RegisterOptions(
-        Name="Leash entity to fence",
-        RegType="EFFECT",
-        Syntaxes="(leash|lead) %livingentities% to %block%")
+	Name="Leash entity to fence",
+	RegType="EFFECT",
+	Syntaxes="(leash|lead) %livingentities% to %block%")
 
-public class EffLeashFence extends Effect{
+public class EffLeashFence extends Effect {
+
 	private Expression<LivingEntity> entity1;
+
 	private Expression<Block> block1;
+
 	private static Entity hitch;
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(Expression<?>[] expr, int arg1, Kleenean arg2, ParseResult arg3) {
@@ -41,11 +45,13 @@ public class EffLeashFence extends Effect{
 	protected void execute(Event e) {
 		LivingEntity[] entity = entity1.getArray(e);
 		Block block = block1.getSingle(e);
-		for (LivingEntity e1 : entity){
+
+		for (LivingEntity e1 : entity) {
 			try {
+
 				EffLeashFence.hitch = block.getLocation().getWorld().spawn(block.getLocation(), LeashHitch.class);
 			}
-			catch (Exception ex){
+			catch (Exception ex) {
 				Location loc2 = block.getLocation();
 				loc2.setX(loc2.getX() - 1);
 				Material b = loc2.getWorld().getBlockAt(loc2).getType();

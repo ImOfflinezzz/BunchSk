@@ -1,11 +1,10 @@
-package com.offline.bunchsk.expressions;
+package com.offline.bunchsk.expression;
 
 import java.util.Collection;
 
 import javax.annotation.Nullable;
 
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.potion.PotionEffect;
 
@@ -17,13 +16,14 @@ import ch.njol.util.Kleenean;
 import com.offline.bunchsk.utils.RegisterOptions;
 
 @RegisterOptions(
-        Name="Tier of potion effect",
-        RegType="EXPRESSION",
-        Syntaxes="%string% [effect] tier of %livingentities%",
-        ExprType=ExpressionType.PROPERTY,
-        ExprClass=Number.class)
+	Name="Tier of potion effect",
+	RegType="EXPRESSION",
+	Syntaxes="%string% [effect] tier of %livingentities%",
+	ExprType=ExpressionType.PROPERTY,
+	ExprClass=Number.class)
 
-public class ExprTierOfPotion extends SimpleExpression<Number>{
+public class ExprTierOfPotion extends SimpleExpression<Number> {
+
 	private Expression<String> potion;
 	private Expression<LivingEntity> entity;
 	
@@ -53,13 +53,15 @@ public class ExprTierOfPotion extends SimpleExpression<Number>{
 	@Override
 	@javax.annotation.Nullable
 	protected Number[] get(Event e) {
+
 		if (entity.getSingle(e) != null) {
+
 			LivingEntity l = entity.getSingle(e);
 			Collection<PotionEffect> C = l.getActivePotionEffects();
-			for (PotionEffect p : C.toArray(new PotionEffect[0])){
-				if (p.getType().getName().equalsIgnoreCase(potion.getSingle(e))){
+			for (PotionEffect p : C.toArray(new PotionEffect[0])) {
+
+				if (p.getType().getName().equalsIgnoreCase(potion.getSingle(e)))
 					return new Number[] {p.getAmplifier()+1};
-				}
 			}
 		} return new Number[] {0};
 	}

@@ -14,27 +14,33 @@ import ch.njol.util.Kleenean;
 import com.offline.bunchsk.utils.RegisterOptions;
 
 @RegisterOptions(
-        Name="ExertSk Web Status",
-        RegType="CONDITION",
-        Syntaxes={"%string% is (online|working|not offline|good|not bad|not 404|not down)", "%string% is (offline|not working|not online|good|bad|404|down)"})
+	Name="ExertSk Web Status",
+	RegType="CONDITION",
+	Syntaxes={"%string% is (online|working|not offline|good|not bad|not 404|not down)", "%string% is (offline|not working|not online|good|bad|404|down)"})
 
-public class CondWebStatus extends Condition{
+public class CondWebStatus extends Condition {
         
-        private Expression<String> EXPRurl;
-        private int matchedPattern;
-        @Override
+	private Expression<String> EXPRurl;
+
+	private int matchedPattern;
+
+	@Override
 	public boolean check(Event e) {
-		try{
+		try {
 			URL u = new URL (EXPRurl.getSingle(e));
-			HttpURLConnection huc =  ( HttpURLConnection )  u.openConnection (); 
-			huc.setRequestMethod ("GET");  //OR  huc.setRequestMethod ("HEAD"); 
+			HttpURLConnection huc =  (HttpURLConnection)  u.openConnection ();
+			huc.setRequestMethod ("GET");
 			huc.connect();
-                        if (matchedPattern == 1) return true;
-                        return false;
+			if (matchedPattern == 1)
+				return true;
+
+			return false;
 		}
 		catch(Exception e1){
-                        if (matchedPattern == 1) return false;
-                        return true;
+			if (matchedPattern == 1)
+				return false;
+
+			return true;
 		}
 	}
 	@SuppressWarnings("unchecked")

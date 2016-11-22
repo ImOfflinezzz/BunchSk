@@ -1,4 +1,4 @@
-package com.offline.bunchsk.expressions;
+package com.offline.bunchsk.expression;
 
 import java.util.Collection;
 
@@ -18,13 +18,14 @@ import com.offline.bunchsk.utils.RegisterOptions;
 
 
 @RegisterOptions(
-        Name="Duration of potion effect",
-        RegType="EXPRESSION",
-        Syntaxes="%string% [effect] duration of %livingentities%",
-        ExprType=ExpressionType.SIMPLE,
-        ExprClass=Timespan.class)
+	Name="Duration of potion effect",
+	RegType="EXPRESSION",
+	Syntaxes="%string% [effect] duration of %livingentities%",
+	ExprType=ExpressionType.SIMPLE,
+	ExprClass=Timespan.class)
 
-public class ExprDurationOfPotion extends SimpleExpression<Timespan>{
+public class ExprDurationOfPotion extends SimpleExpression<Timespan> {
+
 	private Expression<String> potion;
 	private Expression<LivingEntity> entity;
 	

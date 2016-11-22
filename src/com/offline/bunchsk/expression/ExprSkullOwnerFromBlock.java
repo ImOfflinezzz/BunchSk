@@ -1,4 +1,4 @@
-package com.offline.bunchsk.expressions;
+package com.offline.bunchsk.expression;
 
 import javax.annotation.Nullable;
 
@@ -52,10 +52,14 @@ public class ExprSkullOwnerFromBlock extends SimpleExpression<String>{
 	@Override
 	@javax.annotation.Nullable
 	protected String[] get(Event e) {
-		if (block.getSingle(e) != null){
-			if (block.getSingle(e).getType() == Material.SKULL || block.getSingle(e).getType() == Material.SKULL_ITEM){
+
+		if (block.getSingle(e) != null) {
+
+			if (block.getSingle(e).getType() == Material.SKULL || block.getSingle(e).getType() == Material.SKULL_ITEM) {
+
 				Skull skull = (Skull)block.getSingle(e).getState();
-				if (skull.getSkullType() == SkullType.PLAYER){
+				if (skull.getSkullType() == SkullType.PLAYER) {
+
 					return new String[] {skull.getOwner()};
 				}
 			}

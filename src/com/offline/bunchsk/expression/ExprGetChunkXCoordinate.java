@@ -1,28 +1,26 @@
-package com.offline.bunchsk.expressions;
+package com.offline.bunchsk.expression;
 
 import javax.annotation.Nullable;
 
 import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.util.SimpleExpression;
-import ch.njol.skript.util.Timespan;
 import ch.njol.util.Kleenean;
 import com.offline.bunchsk.utils.RegisterOptions;
 
 @RegisterOptions(
-        Name="x-coord of chunk",
-        RegType="EXPRESSION",
-        Syntaxes="x[-](loc[ation]|coord[inate]) of %chunk%",
-        ExprType=ExpressionType.PROPERTY,
-        ExprClass=Integer.class)
+	Name="x-coord of chunk",
+	RegType="EXPRESSION",
+	Syntaxes="x[-](loc[ation]|coord[inate]) of %chunk%",
+	ExprType=ExpressionType.PROPERTY,
+	ExprClass=Integer.class)
 
-public class ExprGetChunkXCoordinate extends SimpleExpression<Integer>{
+public class ExprGetChunkXCoordinate extends SimpleExpression<Integer> {
+
 	private Expression<Chunk> chunk;
 	@Override
 	public Class<? extends Integer> getReturnType() {
@@ -49,7 +47,9 @@ public class ExprGetChunkXCoordinate extends SimpleExpression<Integer>{
 	@Override
 	@javax.annotation.Nullable
 	protected Integer[] get(Event e) {
-		if (chunk.getSingle(e) != null){
+
+		if (chunk.getSingle(e) != null) {
+
 			return new Integer[] {chunk.getSingle(e).getX()*16};
 		}
 		return new Integer[] {};

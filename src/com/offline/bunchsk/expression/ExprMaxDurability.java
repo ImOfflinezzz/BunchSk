@@ -1,8 +1,7 @@
-package com.offline.bunchsk.expressions;
+package com.offline.bunchsk.expression;
 
 import javax.annotation.Nullable;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 
@@ -14,11 +13,11 @@ import ch.njol.util.Kleenean;
 import com.offline.bunchsk.utils.RegisterOptions;
 
 @RegisterOptions(
-        Name="Max durability of item",
-        RegType="EXPRESSION",
-        Syntaxes="max dur[ability] of %itemstack%",
-        ExprType=ExpressionType.PROPERTY,
-        ExprClass=Number.class)
+	Name="Max durability of item",
+	RegType="EXPRESSION",
+	Syntaxes="max dur[ability] of %itemstack%",
+	ExprType=ExpressionType.PROPERTY,
+	ExprClass=Number.class)
 
 //Max durability of %itemstack%
 public class ExprMaxDurability extends SimpleExpression<Number>{

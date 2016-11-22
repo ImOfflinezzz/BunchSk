@@ -1,4 +1,4 @@
-package com.offline.bunchsk.expressions;
+package com.offline.bunchsk.expression;
 
 import org.bukkit.event.Event;
 import javax.annotation.Nullable;
@@ -16,14 +16,16 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
 @RegisterOptions(
-        Name="Author of book",
-        RegType="EXPRESSION",
-        Syntaxes="[book] author of %itemstack%",
-        ExprType=ExpressionType.PROPERTY,
-        ExprClass=String.class)
+	Name="Author of book",
+	RegType="EXPRESSION",
+	Syntaxes="[book] author of %itemstack%",
+	ExprType=ExpressionType.PROPERTY,
+	ExprClass=String.class)
 
-public class ExprBookAuthor extends SimpleExpression<String>{
+public class ExprBookAuthor extends SimpleExpression<String> {
+
 	private Expression<ItemStack> item;
+
 	@Override
 	public Class<? extends String> getReturnType() {
 		return String.class;
@@ -37,17 +39,20 @@ public class ExprBookAuthor extends SimpleExpression<String>{
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(Expression<?>[] expr, int matchedPattern, Kleenean paramKleenean, ParseResult paramParseResult) {
+
 		item = (Expression<ItemStack>) expr[0];
 		return true;
 	}
+
 	@Override
-	public void change(Event e, Object[] delta, Changer.ChangeMode mode){
-		if (mode == ChangeMode.SET){
+	public void change(Event e, Object[] delta, Changer.ChangeMode mode) {
+		if (mode == ChangeMode.SET) {
 			BookMeta book = (BookMeta) item.getSingle(e).getItemMeta();
 			book.setAuthor((String) delta[0]);
 			item.getSingle(e).setItemMeta(book);
 		}
 	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public Class<?>[] acceptChange(final Changer.ChangeMode mode) {
@@ -55,6 +60,7 @@ public class ExprBookAuthor extends SimpleExpression<String>{
 			return CollectionUtils.array(String.class);
 		return null;
 	}
+
 	@Override
 	public String toString(@Nullable Event arg0, boolean arg1) {
 		return "[book] author of %itemstack%";

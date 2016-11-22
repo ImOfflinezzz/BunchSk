@@ -10,19 +10,24 @@ import java.util.jar.JarFile;
 public class ClassFinder {
  
     public static Set<Class<?>> getClasses(File jarFile, String packageName) {
-        Set<Class<?>> classes = new HashSet<Class<?>>();
+
+        Set<Class<?>> classes = new HashSet<>();
+
         try {
             JarFile file = new JarFile(jarFile);
             for (Enumeration<JarEntry> entry = file.entries(); entry.hasMoreElements();) {
                JarEntry jarEntry = entry.nextElement();
                String name = jarEntry.getName().replace("/", ".");
-               if(name.startsWith(packageName) && name.endsWith(".class")){
-               classes.add(Class.forName(name.substring(0, name.length() - 6)));}
+               if(name.startsWith(packageName) && name.endsWith(".class"))
+                    classes.add(Class.forName(name.substring(0, name.length() - 6)));
             }
+
             file.close();
+
         } catch(Exception e) {
             e.printStackTrace();
         }
+
         return classes;
     }
 }

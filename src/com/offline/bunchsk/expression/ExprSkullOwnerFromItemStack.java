@@ -1,4 +1,4 @@
-package com.offline.bunchsk.expressions;
+package com.offline.bunchsk.expression;
 
 import javax.annotation.Nullable;
 
@@ -15,11 +15,12 @@ import ch.njol.util.Kleenean;
 import com.offline.bunchsk.utils.RegisterOptions;
 
 @RegisterOptions(
-        Name="Owner of head",
-        RegType="EXPRESSION",
-            Syntaxes="skull owner of %itemstack%",
-        ExprType=ExpressionType.PROPERTY,
-        ExprClass=String.class)
+	Name="Owner of head",
+	RegType="EXPRESSION",
+	Syntaxes="skull owner of %itemstack%",
+	ExprType=ExpressionType.PROPERTY,
+	ExprClass=String.class)
+
 //skull owner of %block%
 public class ExprSkullOwnerFromItemStack extends SimpleExpression<String>{
 	
@@ -50,8 +51,11 @@ public class ExprSkullOwnerFromItemStack extends SimpleExpression<String>{
 	@Override
 	@javax.annotation.Nullable
 	protected String[] get(Event e) {
-		if (item.getSingle(e) != null){
-			if (item.getSingle(e).getType() == Material.SKULL_ITEM || item.getSingle(e).getType() == Material.SKULL){
+
+		if (item.getSingle(e) != null) {
+
+			if (item.getSingle(e).getType() == Material.SKULL_ITEM || item.getSingle(e).getType() == Material.SKULL) {
+
 				SkullMeta skull = (SkullMeta)item.getSingle(e).getItemMeta();
 				return new String[] {skull.getOwner()};
 			}

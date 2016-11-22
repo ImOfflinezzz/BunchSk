@@ -18,25 +18,37 @@
 package com.offline.bunchsk.utils;
 
 import ch.njol.skript.lang.ExpressionType;
-import com.offline.bunchsk.effects.EffBroadcastPerm;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
 /**
  *
  * @author Kids
  */
+
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RegisterOptions{
+public @interface RegisterOptions {
     
-    public enum RegisterType{
-        EFFECT,EXPRESSION,CONDITION,EVENT
+    enum RegisterType{
+        EFFECT,
+        EXPRESSION,
+        CONDITION,
+        VERSIONS,
+        EVENT
     }
     
     String Name() default "BunchSk something";
+
     String RegType() default "EFFECT";
+
     String PluginDepend() default "None";
+
     String[] Syntaxes() default "do something";
+
+    String[] Versions() default "do something";
+
     Class ExprClass() default String.class;
+
     ExpressionType ExprType() default ExpressionType.SIMPLE;
     
 }
