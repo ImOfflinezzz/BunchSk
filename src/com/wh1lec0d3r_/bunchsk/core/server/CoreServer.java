@@ -38,13 +38,13 @@ public class CoreServer {
 
         while (!this.getServerSocket().isClosed()) {
             try {
-                Thread.sleep(10L);
-
                 Socket socket = this.getServerSocket().accept();
 
                 System.out.println("Reading connection");
 
                 this.clients.put(socket, new ClientHandler(socket));
+
+                Thread.sleep(10L);
             } catch (IOException | InterruptedException e) {
                 System.out.println("Error on read connection");
                 e.printStackTrace();
