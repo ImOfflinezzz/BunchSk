@@ -6,6 +6,6 @@ public class Start {
 
     public static void main(String[] args) {
 
-        coreServer = new CoreServer();
+        coreServer = new CoreServer(args);
     }
 }
