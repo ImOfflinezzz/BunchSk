@@ -1,5 +1,8 @@
 package com.wh1lec0d3r_.bunchsk.core.server;
 
+import com.wh1lec0d3r_.bunchsk.core.packet.PacketManager;
+import com.wh1lec0d3r_.bunchsk.core.packet.YPacket;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -19,6 +22,16 @@ public class ClientHandler extends Thread {
         while (!this.getSocket().isClosed()) {
             try {
                 DataInputStream dataInputStream = new DataInputStream(this.getSocket().getInputStream());
+                short id = dataInputStream.readShort();
+
+                YPacket yPacket = PacketManager.getPacket(id);
+                if(yPacket != null) {
+                    yPacket.setSocket(this.getSocket());
+                    yPacket.setClientHandler(this);
+                    yPacket.read(dataInputStream);
+                    yPacket.handle();
+                }
+
 
                 Thread.sleep(10L);
             } catch (IOException | InterruptedException e) {
