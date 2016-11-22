@@ -4,18 +4,16 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-public class ClientHandler {
+public class ClientHandler extends Thread {
 
     private Socket socket;
 
     public ClientHandler(Socket socket) {
         this.socket = socket;
-
-        //yep, just read. I have no idea for name this function..
-        this.read();
+        this.start();
     }
 
-    private void read() {
+    public void run() {
         while (!this.getSocket().isClosed()) {
             try {
                 DataInputStream dataInputStream = new DataInputStream(this.getSocket().getInputStream());
@@ -26,6 +24,7 @@ public class ClientHandler {
             }
         }
     }
+
 
     public Socket getSocket() {
         return socket;
