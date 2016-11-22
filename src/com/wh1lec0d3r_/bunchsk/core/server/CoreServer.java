@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class CoreServer {
 
@@ -14,16 +15,21 @@ public class CoreServer {
     private HashMap<Socket, ClientHandler> clients = new HashMap<>();
 
     public CoreServer(String[] args) {
+        System.out.println("Loading...");
+        System.out.println("Loading config...");
         this.loadConfig();
-        this.getConfigData().saveConfig();
+        System.out.println("Opening socket...");
         this.openSocket(this.getConfigData().port);
+        System.out.println("Starting read connections...");
         this.startReadConnections();
     }
 
     private void openSocket(int port) {
         try {
             this.serverSocket = new ServerSocket(port);
+            System.out.println("Socket opened successfully");
         } catch (IOException e) {
+            System.out.println("Error on opening socket...");
             e.printStackTrace();
         }
     }
@@ -32,12 +38,15 @@ public class CoreServer {
 
         while (!this.getServerSocket().isClosed()) {
             try {
+                Thread.sleep(10L);
+
                 Socket socket = this.getServerSocket().accept();
 
-                this.clients.put(socket, new ClientHandler(socket));
+                System.out.println("Reading connection");
 
-                Thread.sleep(10L);
+                this.clients.put(socket, new ClientHandler(socket));
             } catch (IOException | InterruptedException e) {
+                System.out.println("Error on read connection");
                 e.printStackTrace();
             }
         }
@@ -46,12 +55,15 @@ public class CoreServer {
     private void loadConfig() {
 
         if (ConfigData.configFile.exists()) {
+            System.out.println("Loading from file...");
             configData = new ConfigData();
             configData = configData.readConfig(ConfigData.class);
         } else {
+            System.out.println("Creating file...");
             configData = new ConfigData();
             configData.saveConfig();
         }
+        System.out.println("File loaded successfully");
     }
 
     public ConfigData getConfigData() {
@@ -60,5 +72,26 @@ public class CoreServer {
 
     public ServerSocket getServerSocket() {
         return serverSocket;
+    }
+
+    public HashMap<Socket, ClientHandler> getClients() {
+        return clients;
+    }
+
+    public ClientHandler getClient(Socket socket) {
+        return this.getClients().get(socket);
+    }
+
+    public void removeClient(ClientHandler clientHandler) {
+        Iterator<Socket> clientsIterator = this.getClients().keySet().iterator();
+
+        while (clientsIterator.hasNext()) {
+            Socket socket = clientsIterator.next();
+            this.getClients().remove(socket);
+        }
+    }
+
+    public void removeClient(Socket socket) {
+        this.getClients().remove(socket);
     }
 }
