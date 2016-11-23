@@ -12,11 +12,15 @@ import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.wh1lec0d3r_.bunchsk.core.client.config.ConfigData;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class BunchSk extends JavaPlugin {   
-    
+
+    private ConfigData configData;
+
     @Override
     public void onEnable() {
 
@@ -31,7 +35,8 @@ public class BunchSk extends JavaPlugin {
             Logger.getLogger(BunchSk.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("BunchSk couldn't register stuff");
         }
-        
+
+        this.loadConfig();
     }
 
             /* Classes.registerClass(new ClassInfo<PluginCheck>(PluginCheck.class, "pluginenabled").parser(new Parser<PluginCheck>() {
@@ -72,6 +77,20 @@ public class BunchSk extends JavaPlugin {
     @Override
     public void onDisable() {
         
+    }
+
+    private void loadConfig() {
+
+        if (ConfigData.configFile.exists()) {
+            System.out.println("Loading from file...");
+            configData = new ConfigData();
+            configData = configData.readConfig(ConfigData.class);
+        } else {
+            System.out.println("Creating file...");
+            configData = new ConfigData();
+            configData.saveConfig();
+        }
+        System.out.println("File loaded successfully");
     }
     
     public void registerElements() throws IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
