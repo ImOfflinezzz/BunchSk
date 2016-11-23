@@ -1,7 +1,7 @@
 package com.wh1lec0d3r_.bunchsk.core.server;
 
-import com.wh1lec0d3r_.bunchsk.core.packet.PacketManager;
-import com.wh1lec0d3r_.bunchsk.core.packet.YPacket;
+import com.wh1lec0d3r_.bunchsk.core.server.packet.PacketManager;
+import com.wh1lec0d3r_.bunchsk.core.server.packet.YPacket;
 
 import java.io.DataInputStream;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.wh1lec0d3r_.bunchsk.core.packet;
+package com.wh1lec0d3r_.bunchsk.core.server.packet;
 
 import java.util.HashMap;
 import java.util.Map;
