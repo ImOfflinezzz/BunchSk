@@ -1,4 +1,4 @@
-package com.wh1lec0d3r_.bunchsk.core.server.config;
+package com.wh1lec0d3r_.bunchsk.core.client.config;
 
 import com.google.gson.annotations.Expose;
 import com.wh1lec0d3r_.bunchsk.core.api.config.GsonUtils;
@@ -14,6 +14,10 @@ public class ConfigData implements JsonSerializable {
     public static File configFile = new File("config.json");
 
     //vars
+    @Expose
+    public String
+        host = "localhost";
+
     @Expose
     public int
         port = 6000;
