@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.wh1lec0d3r_.bunchsk.core.client.CoreClient;
 import com.wh1lec0d3r_.bunchsk.core.client.config.ConfigData;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,6 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class BunchSk extends JavaPlugin {   
 
     private ConfigData configData;
+    private CoreClient coreClient;
 
     @Override
     public void onEnable() {
@@ -37,6 +39,7 @@ public class BunchSk extends JavaPlugin {
         }
 
         this.loadConfig();
+        this.coreClient = new CoreClient(this.configData);
     }
 
             /* Classes.registerClass(new ClassInfo<PluginCheck>(PluginCheck.class, "pluginenabled").parser(new Parser<PluginCheck>() {
