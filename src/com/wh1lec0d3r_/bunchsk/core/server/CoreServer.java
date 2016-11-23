@@ -13,6 +13,7 @@ public class CoreServer {
     private ConfigData configData;
     private ServerSocket serverSocket;
     private HashMap<Socket, ClientHandler> clients = new HashMap<>();
+    private HashMap<String, Object> vars = new HashMap<>();
 
     public CoreServer(String[] args) {
         System.out.println("Loading...");
@@ -80,6 +81,30 @@ public class CoreServer {
 
     public ClientHandler getClient(Socket socket) {
         return this.getClients().get(socket);
+    }
+
+    public HashMap<String, Object> getVars() {
+        return vars;
+    }
+
+    public Object getVar(String key) {
+        return this.getVars().get(key);
+    }
+
+    public void setVar(String key, Object value) {
+        this.getVars().put(key, value);
+    }
+
+    public HashMap<String, Object> getConfigVars() {
+        return this.getConfigData().vars;
+    }
+
+    public Object getConfigVar(String key) {
+        return this.getConfigVars().get(key);
+    }
+
+    public void setConfigVar(String key, Object value) {
+        this.getConfigVars().put(key, value);
     }
 
     public void removeClient(ClientHandler clientHandler) {
