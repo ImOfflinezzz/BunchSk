@@ -1,4 +1,4 @@
-package com.wh1lec0d3r_.bunchsk.core.server.api.config;
+package com.wh1lec0d3r_.bunchsk.core.api.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

@@ -1,7 +1,7 @@
-package com.wh1lec0d3r_.bunchsk.core.server.api.utils;
+package com.wh1lec0d3r_.bunchsk.core.api.utils;
 
 import com.google.gson.Gson;
-import com.wh1lec0d3r_.bunchsk.core.server.api.config.JsonSerializable;
+import com.wh1lec0d3r_.bunchsk.core.api.config.JsonSerializable;
 
 import java.io.File;
 import java.io.FileNotFoundException;
