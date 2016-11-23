@@ -1,9 +1,9 @@
 package com.wh1lec0d3r_.bunchsk.core.server.config;
 
 import com.google.gson.annotations.Expose;
-import com.wh1lec0d3r_.bunchsk.core.server.api.config.GsonUtils;
-import com.wh1lec0d3r_.bunchsk.core.server.api.config.JsonSerializable;
-import com.wh1lec0d3r_.bunchsk.core.server.api.utils.IOUtils;
+import com.wh1lec0d3r_.bunchsk.core.api.config.GsonUtils;
+import com.wh1lec0d3r_.bunchsk.core.api.config.JsonSerializable;
+import com.wh1lec0d3r_.bunchsk.core.api.utils.IOUtils;
 
 import java.io.File;
 import java.util.HashMap;
