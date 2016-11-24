@@ -43,7 +43,7 @@ public class CoreServer {
 
                 System.out.println("Reading connection");
 
-                this.clients.put(socket, new ClientHandler(socket));
+                this.clients.put(socket, new ClientHandler(socket, this));
 
                 Thread.sleep(10L);
             } catch (IOException | InterruptedException e) {

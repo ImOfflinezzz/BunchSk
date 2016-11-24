@@ -10,10 +10,13 @@ import java.net.Socket;
 public class ClientHandler extends Thread {
 
     private Socket socket;
+    private CoreServer coreServer;
 
-    public ClientHandler(Socket socket) {
-        System.out.println("Created client");
+    public ClientHandler(Socket socket, CoreServer coreServer) {
+        System.out.println("Creating client");
         this.socket = socket;
+        this.coreServer = coreServer;
+        System.out.println("Created client");
         System.out.println("Starting read data");
         this.start();
     }
@@ -32,10 +35,11 @@ public class ClientHandler extends Thread {
                     yPacket.handle();
                 }
 
-
                 Thread.sleep(10L);
             } catch (IOException | InterruptedException e) {
                 System.out.println("Error on read data");
+                this.stop();
+                this.coreServer.removeClient(this);
                 e.printStackTrace();
             }
         }
