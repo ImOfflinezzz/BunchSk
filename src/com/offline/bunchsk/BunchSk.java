@@ -41,41 +41,6 @@ public class BunchSk extends JavaPlugin {
         this.loadConfig();
         this.coreClient = new CoreClient(this.configData);
     }
-
-            /* Classes.registerClass(new ClassInfo<PluginCheck>(PluginCheck.class, "pluginenabled").parser(new Parser<PluginCheck>() {
-            @Override
-            public String getVariableNamePattern() {
-            return ".+";
-            }
-
-            @Override
-            public PluginCheck parse(String s, ParseContext cont) {
-            try {
-            return PluginCheck.valueOf(s.replace(" ", "_").trim().toUpperCase());
-            } catch (IllegalArgumentException e) {
-            return null;
-            }
-            }
-
-            @Override
-            public String toString(PluginCheck pc, int i) {
-            return pc.name().replace("_", " ").toLowerCase();
-            }
-
-            @Override
-            public String toVariableNameString(PluginCheck pc) {
-            return pc.name().replace("_", " ").toLowerCase();
-            }
-            }));
-            Skript.registerEffect(EffSurfaceHigh.class, "surf[ace] %player% to [the] high[est] [loc[ation]]");
-            Skript.registerEffect(EffSurfaceNear.class, "surf[ace] %player% to [the] near[est] [loc[ation]]");
-            Skript.registerEffect(EffPickupState.class, "allow %entity% to pick[ ]up","disallow %entity% to pick[ ]up");
-            Skript.registerEffect(EffBroadcastPerm.class, "broad[cast] %string% to [all] players with perm[ission] %string%");
-            Skript.registerExpression(ExprBunchVer.class, String.class, ExpressionType.SIMPLE, "bunch[sk] ver[sion]");
-            Skript.registerCondition(CondCanPickup.class, "%entity% can pick[ ]up", "%entity% can't pick[ ]up");
-            if (Bukkit.getServer().getVersion().contains("1.9")) {
-            Skript.registerCondition(CondCanPickup.class, "%entity% is collidable", "%entity% isn't collidable");
-            }*/
     
     @Override
     public void onDisable() {
