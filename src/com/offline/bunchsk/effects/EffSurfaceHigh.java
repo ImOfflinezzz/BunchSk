@@ -14,7 +14,7 @@ import com.offline.bunchsk.utils.RegisterOptions;
 import com.offline.bunchsk.utils.RegisterOptions.RegisterType;
 
 @RegisterOptions(
-    Name="Surface player ti highest place",
+    Name="Surface player to highest place",
     RegType="EFFECT",
     Syntaxes="surf[ace] %player% to [the] high[est] [loc[ation]]")
 
