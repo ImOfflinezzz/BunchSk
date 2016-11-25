@@ -15,8 +15,8 @@ import ch.njol.util.Kleenean;
 import com.offline.bunchsk.utils.RegisterOptions;
 
 @RegisterOptions(
-    Name="Surface player ti highest place",
-RegType="EFFECT",
+    Name="Surface player to highest place",
+    RegType="EFFECT",
     Syntaxes="surf[ace] %player% to [the] near[est] [loc[ation]]")
 
 public class EffSurfaceNear extends Effect {
