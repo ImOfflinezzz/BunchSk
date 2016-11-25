@@ -20,139 +20,73 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class BunchSk extends JavaPlugin {   
 
-    private ConfigData configData;
-    private CoreClient coreClient;
+	private ConfigData configData;
+	private CoreClient coreClient;
 
-    @Override
-    public void onEnable() {
-
-        Skript.registerAddon(this);
-
-        try {
-
-            registerElements();
-
-        } catch (IOException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-
-            Logger.getLogger(BunchSk.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("BunchSk couldn't register stuff");
-        }
-
-        this.loadConfig();
-        this.coreClient = new CoreClient(this.configData);
-    }
-
-            /* Classes.registerClass(new ClassInfo<PluginCheck>(PluginCheck.class, "pluginenabled").parser(new Parser<PluginCheck>() {
-            @Override
-            public String getVariableNamePattern() {
-            return ".+";
-            }
-
-            @Override
-            public PluginCheck parse(String s, ParseContext cont) {
-            try {
-            return PluginCheck.valueOf(s.replace(" ", "_").trim().toUpperCase());
-            } catch (IllegalArgumentException e) {
-            return null;
-            }
-            }
-
-            @Override
-            public String toString(PluginCheck pc, int i) {
-            return pc.name().replace("_", " ").toLowerCase();
-            }
-
-            @Override
-            public String toVariableNameString(PluginCheck pc) {
-            return pc.name().replace("_", " ").toLowerCase();
-            }
-            }));
-            Skript.registerEffect(EffSurfaceHigh.class, "surf[ace] %player% to [the] high[est] [loc[ation]]");
-            Skript.registerEffect(EffSurfaceNear.class, "surf[ace] %player% to [the] near[est] [loc[ation]]");
-            Skript.registerEffect(EffPickupState.class, "allow %entity% to pick[ ]up","disallow %entity% to pick[ ]up");
-            Skript.registerEffect(EffBroadcastPerm.class, "broad[cast] %string% to [all] players with perm[ission] %string%");
-            Skript.registerExpression(ExprBunchVer.class, String.class, ExpressionType.SIMPLE, "bunch[sk] ver[sion]");
-            Skript.registerCondition(CondCanPickup.class, "%entity% can pick[ ]up", "%entity% can't pick[ ]up");
-            if (Bukkit.getServer().getVersion().contains("1.9")) {
-            Skript.registerCondition(CondCanPickup.class, "%entity% is collidable", "%entity% isn't collidable");
-            }*/
-    
-    @Override
-    public void onDisable() {
-        
-    }
-
-    private void loadConfig() {
-
-        if (ConfigData.configFile.exists()) {
-            System.out.println("Loading from file...");
-            configData = new ConfigData();
-            configData = configData.readConfig(ConfigData.class);
-        } else {
-            System.out.println("Creating file...");
-            configData = new ConfigData();
-            configData.saveConfig();
-        }
-        System.out.println("File loaded successfully");
-    }
-    
-    public void registerElements() throws IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        
-        int effcount = 0;
-        int exprcount = 0;
-        int evtcount = 0;
-        int condcount = 0;
-
-        System.out.println("BunchSk registering stuff");
-        JavaPlugin plugin = (JavaPlugin) getServer().getPluginManager().getPlugin("BunchSk");
-        Method getFileMethod = JavaPlugin.class.getDeclaredMethod("getFile");
-        getFileMethod.setAccessible(true);
-        File file = (File) getFileMethod.invoke(this);
-        
-        Set<Class<?>> classes = ClassFinder.getClasses(file, "com.offline.bunchsk");
-        
-        if (classes != null) {
-
-            for (Class c : classes) {
-
-                if(c.isAnnotationPresent(RegisterOptions.class)) {
-
-                    Annotation ann = c.getAnnotation(RegisterOptions.class);
-                    RegisterOptions ro = (RegisterOptions) ann;
-                    int asd = 1;
-
-                    if (ro.PluginDepend()!="None" && Bukkit.getPluginManager().getPlugin(ro.PluginDepend()) == null)
-                        asd = 0;
-
-                    if (asd == 0) {
-
-                        switch (ro.RegType()) {
-
-                            case "EFFECT":
-                                Skript.registerEffect(c, ro.Syntaxes());
-                                effcount++;
-                                break;
-
-                            case "CONDITION":
-                                Skript.registerCondition(c, ro.Syntaxes());
-                                condcount++;
-                                break;
-
-                            case "EVENT":
-	                            Skript.registerEvent(ro.Name(), SimpleEvent.class, c, ro.Syntaxes());
-		                        evtcount++;
-		                        break;
-
-	                        case "EXPRESSION":
-	            	            Skript.registerExpression(c,ro.ExprClass(),ro.ExprType(),ro.Syntaxes());
-                                exprcount++;
-                                break;
-                        }
-                    }
-                }    
-            }
-
-            System.out.println("BunchSk successfully registered " + effcount + " effects, " + exprcount + " expressions, " + evtcount + " events, " + condcount + " conditions");
-        }
-    }
+	@Override
+	public void onEnable() {
+		Skript.registerAddon(this);
+		try {
+			registerElements();
+		} catch (IOException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+			Logger.getLogger(BunchSk.class.getName()).log(Level.SEVERE, null, ex);
+			System.out.println("BunchSk couldn't register stuff");
+		}
+		loadConfig();
+		coreClient = new CoreClient(configData);
+	}
+	
+	private void loadConfig() {
+		if (ConfigData.configFile.exists()) {
+			System.out.println("Loading from file...");
+			configData = new ConfigData();
+			configData = configData.readConfig(ConfigData.class);
+		} else {
+			System.out.println("Creating file...");
+			configData = new ConfigData();
+			configData.saveConfig();
+		}
+		System.out.println("File loaded successfully");
+	}
+	
+	public void registerElements() throws IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		
+		int effcount, exprcount, evtcount, condcount = 0;
+		
+		System.out.println("BunchSk registering stuff");
+		JavaPlugin plugin = (JavaPlugin) getServer().getPluginManager().getPlugin("BunchSk");
+		Method getFileMethod = JavaPlugin.class.getDeclaredMethod("getFile");
+		getFileMethod.setAccessible(true);
+		File file = (File) getFileMethod.invoke(this);
+		Set<Class<?>> classes = ClassFinder.getClasses(file, "com.offline.bunchsk");
+		if (classes != null) {
+			for (Class c : classes) {
+				if(c.isAnnotationPresent(RegisterOptions.class)) {
+					Annotation ann = c.getAnnotation(RegisterOptions.class);
+					RegisterOptions ro = (RegisterOptions) ann;
+					if (ro.PluginDepend()!= "None" && Bukkit.getPluginManager().getPlugin(ro.PluginDepend()) == null)
+						switch (ro.RegType()) {
+							case "EFFECT":
+								Skript.registerEffect(c, ro.Syntaxes());
+								effcount++;
+								break;
+							case "CONDITION":
+								Skript.registerCondition(c, ro.Syntaxes());
+								condcount++;
+								break;
+							case "EVENT":
+								Skript.registerEvent(ro.Name(), SimpleEvent.class, c, ro.Syntaxes());
+								evtcount++;
+								break;
+							case "EXPRESSION":
+								Skript.registerExpression(c,ro.ExprClass(),ro.ExprType(),ro.Syntaxes());
+								exprcount++;
+								break;
+						}
+					}
+				}	
+			}
+			System.out.println("BunchSk successfully registered " + effcount + " effects, " + exprcount + " expressions, " + evtcount + " events, " + condcount + " conditions");
+		}
+	}
 }
