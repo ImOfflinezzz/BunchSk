@@ -20,11 +20,17 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class BunchSk extends JavaPlugin {   
 
+    static BunchSk bunchSk;
+
     private ConfigData configData;
     private CoreClient coreClient;
 
+    private File configFile = new File(this.getDataFolder(), "config.json");
+
     @Override
     public void onEnable() {
+
+        bunchSk = this;
 
         Skript.registerAddon(this);
 
@@ -49,7 +55,7 @@ public class BunchSk extends JavaPlugin {
 
     private void loadConfig() {
 
-        if (ConfigData.configFile.exists()) {
+        if (this.getConfigFile().exists()) {
             System.out.println("Loading from file...");
             configData = new ConfigData();
             configData = configData.readConfig(ConfigData.class);
@@ -61,8 +67,8 @@ public class BunchSk extends JavaPlugin {
                 if(!this.getDataFolder().exists())
                     this.getDataFolder().mkdir();
 
-                if(!ConfigData.configFile.exists())
-                    ConfigData.configFile.createNewFile();
+                if(!this.getConfigFile().exists())
+                    this.getConfigFile().createNewFile();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -131,5 +137,21 @@ public class BunchSk extends JavaPlugin {
 
             System.out.println("BunchSk successfully registered " + effcount + " effects, " + exprcount + " expressions, " + evtcount + " events, " + condcount + " conditions");
         }
+    }
+
+    public ConfigData getConfigData() {
+        return configData;
+    }
+
+    public static BunchSk getBunchSk() {
+        return bunchSk;
+    }
+
+    public CoreClient getCoreClient() {
+        return coreClient;
+    }
+
+    public File getConfigFile() {
+        return configFile;
     }
 }
