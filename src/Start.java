@@ -5,7 +5,6 @@ public class Start {
     static CoreServer coreServer;
 
     public static void main(String[] args) {
-
         coreServer = new CoreServer(args);
     }
 }
