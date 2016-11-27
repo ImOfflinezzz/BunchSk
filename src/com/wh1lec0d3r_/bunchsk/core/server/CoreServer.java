@@ -16,7 +16,7 @@ public class CoreServer {
     private HashMap<Socket, ClientHandler> clients = new HashMap<>();
     private HashMap<String, Object> vars = new HashMap<>();
 
-    //test comment, for test push
+    //test comment, for test push, test
     public CoreServer(String[] args) {
         System.out.println("Loading...");
         System.out.println("Loading config...");
