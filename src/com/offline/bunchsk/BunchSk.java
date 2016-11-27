@@ -56,6 +56,18 @@ public class BunchSk extends JavaPlugin {
         } else {
             System.out.println("Creating file...");
             configData = new ConfigData();
+
+            try {
+                if(!this.getDataFolder().exists())
+                    this.getDataFolder().mkdir();
+
+                if(!ConfigData.configFile.exists())
+                    ConfigData.configFile.createNewFile();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+
             configData.saveConfig();
         }
         System.out.println("File loaded successfully");
