@@ -15,6 +15,10 @@ public class ConfigData implements JsonSerializable {
 
     //vars
     @Expose
+    public String
+        password = "password";
+
+    @Expose
     public int
         port = 6000;
 
