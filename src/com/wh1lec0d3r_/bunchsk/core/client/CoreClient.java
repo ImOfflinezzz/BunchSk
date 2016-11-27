@@ -1,7 +1,10 @@
 package com.wh1lec0d3r_.bunchsk.core.client;
 
+import com.wh1lec0d3r_.bunchsk.core.api.utils.Hash;
 import com.wh1lec0d3r_.bunchsk.core.client.config.ConfigData;
+import org.bukkit.Bukkit;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -14,6 +17,18 @@ public class CoreClient extends Thread {
         System.out.println("Loading...");
         this.configData = configData;
         this.openSocket(configData.host, configData.port);
+        this.sendData();
+    }
+
+    private void sendData() {
+        try {
+            DataOutputStream dataOutputStream = new DataOutputStream(this.getSocket().getOutputStream());
+            dataOutputStream.writeUTF(Bukkit.getWorldContainer().getCanonicalFile().getName());
+            dataOutputStream.writeUTF(this.getConfigData().password);
+            dataOutputStream.writeInt(this.getConfigData().hashId);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     private void openSocket(String host, int port) {
@@ -29,5 +44,13 @@ public class CoreClient extends Thread {
 
     public void run() {
 
+    }
+
+    public Socket getSocket() {
+        return socket;
+    }
+
+    public ConfigData getConfigData() {
+        return configData;
     }
 }
