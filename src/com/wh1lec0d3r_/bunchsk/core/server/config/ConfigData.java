@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.wh1lec0d3r_.bunchsk.core.api.config.GsonUtils;
 import com.wh1lec0d3r_.bunchsk.core.api.config.JsonSerializable;
 import com.wh1lec0d3r_.bunchsk.core.api.utils.IOUtils;
+import com.wh1lec0d3r_.bunchsk.core.server.CoreServer;
 
 import java.io.File;
 import java.util.HashMap;
@@ -11,7 +12,7 @@ import java.util.HashMap;
 public class ConfigData implements JsonSerializable {
 
     //file
-    public static File configFile = new File("config.json");
+    //public static File configFile = new File("config.json");
 
     //vars
     @Expose
@@ -28,10 +29,10 @@ public class ConfigData implements JsonSerializable {
 
     //utils
     public ConfigData readConfig(Class classOfT) {
-        return (ConfigData) IOUtils.readFromFile(configFile, classOfT, GsonUtils.getGson());
+        return (ConfigData) IOUtils.readFromFile(CoreServer.getInstance().getConfigFile(), classOfT, GsonUtils.getGson());
     }
 
     public void saveConfig() {
-        IOUtils.writeToFile(configFile, this, GsonUtils.getGson());
+        IOUtils.writeToFile(CoreServer.getInstance().getConfigFile(), this, GsonUtils.getGson());
     }
 }
