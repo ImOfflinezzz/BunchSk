@@ -83,4 +83,9 @@ public class ClientHandler extends Thread {
     public CoreServer getCoreServer() {
         return coreServer;
     }
+
+    public String getHandlerName() {
+        return name;
+    }
+
 }

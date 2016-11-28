@@ -2,12 +2,12 @@ package com.wh1lec0d3r_.bunchsk.core.server;
 
 import com.wh1lec0d3r_.bunchsk.core.server.config.ConfigData;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Scanner;
 
 public class CoreServer {
 
@@ -15,6 +15,9 @@ public class CoreServer {
     private ServerSocket serverSocket;
     private HashMap<Socket, ClientHandler> clients = new HashMap<>();
     private HashMap<String, Object> vars = new HashMap<>();
+
+    private Thread readConnectionsThread;
+    private Thread readConsoleThread;
 
     //test comment, for test push, test
     public CoreServer(String[] args) {
@@ -25,6 +28,9 @@ public class CoreServer {
         this.openSocket(this.getConfigData().port);
         System.out.println("Starting read connections...");
         this.startReadConnections();
+        System.out.println("test :/");
+        this.startReadConsole();
+        System.out.println("console reader started");
     }
 
 
@@ -41,20 +47,62 @@ public class CoreServer {
 
     private void startReadConnections() {
 
-        while (!this.getServerSocket().isClosed()) {
-            try {
-                Socket socket = this.getServerSocket().accept();
+        this.readConnectionsThread = new Thread(() -> {
+           while (!this.getServerSocket().isClosed()) {
+               try {
+                   Socket socket = this.getServerSocket().accept();
 
-                System.out.println("Reading connection");
+                   System.out.println("reading connection");
 
-                this.clients.put(socket, new ClientHandler(socket, this));
+                   this.clients.put(socket, new ClientHandler(socket, this));
 
-                Thread.sleep(10L);
-            } catch (IOException | InterruptedException e) {
-                System.out.println("Error on read connection");
-                e.printStackTrace();
+                   Thread.sleep(10L);
+               } catch (IOException | InterruptedException ex) {
+                   ex.printStackTrace();
+               }
+           }
+        });
+
+        this.readConnectionsThread.start();
+    }
+
+    private void startReadConsole() {
+        this.readConsoleThread = new Thread(() -> {
+            Scanner scanner = new Scanner(System.in);
+
+            while (true) {
+                String line = scanner.nextLine();
+                if(line.length() != 0) {
+                    if(line.startsWith("/")) {
+                        switch (line) {
+                            case "/end":
+                                System.exit(0);
+                                break;
+                            case "/servers":
+                                int clientCount = 0;
+                                for(ClientHandler clientHandler : this.clients.values()) {
+                                    System.out.println("Clients: ");
+                                    System.out.println("    Client #" + clientCount + " Client name: " + clientHandler.getHandlerName() + " Client ip: " + clientHandler.getSocket().getInetAddress().getHostAddress());
+                                    clientCount++;
+                                }
+
+                                if(this.clients.size() == 0)
+                                    System.out.println("You are alone :(");
+                                break;
+                            case "saveConfig":
+                                this.configData.saveConfig();
+                                break;
+                            default:
+                                System.out.println("Unknown command");
+                                break;
+                        }
+                    }
+                }
+                //System.out.println(line);
             }
-        }
+        });
+
+        this.readConsoleThread.start();
     }
 
     private void loadConfig() {
@@ -123,4 +171,5 @@ public class CoreServer {
     public void removeClient(Socket socket) {
         this.getClients().remove(socket);
     }
+
 }
