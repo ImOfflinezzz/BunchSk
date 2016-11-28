@@ -34,21 +34,30 @@ public class ClientHandler extends Thread {
             int hashId = dataInputStream.readInt();
 
             this.name = name;
-            if(Hash.validate(Hash.getEnumById(hashId), password, this.getCoreServer().getConfigData().password))
+            if(Hash.validate(Hash.getEnumById(hashId), password, this.getCoreServer().getConfigData().password)) {
                 this.start();
-            else {
+                this.sendData(true);
+            } else {
                 System.out.println("logout");
                 this.getCoreServer().removeClient(this);
+
+                this.sendData(false);
+
                 this.getSocket().close();
             }
-
-
-
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
 
-
+    private void sendData(boolean b) {
+        try {
+            DataOutputStream dataOutputStream = new DataOutputStream(this.getSocket().getOutputStream());
+            dataOutputStream.writeBoolean(b);
+            //dataOutputStream.writeUTF();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public void run() {
