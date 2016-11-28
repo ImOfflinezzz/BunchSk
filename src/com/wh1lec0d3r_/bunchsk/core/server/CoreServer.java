@@ -2,6 +2,7 @@ package com.wh1lec0d3r_.bunchsk.core.server;
 
 import com.wh1lec0d3r_.bunchsk.core.server.config.ConfigData;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -10,6 +11,10 @@ import java.util.Iterator;
 import java.util.Scanner;
 
 public class CoreServer {
+
+    static CoreServer instance;
+
+    private File configFile = new File("config.json");
 
     private ConfigData configData;
     private ServerSocket serverSocket;
@@ -21,6 +26,9 @@ public class CoreServer {
 
     //test comment, for test push, test
     public CoreServer(String[] args) {
+
+        instance = this;
+
         System.out.println("Loading...");
         System.out.println("Loading config...");
         this.loadConfig();
@@ -107,7 +115,7 @@ public class CoreServer {
 
     private void loadConfig() {
 
-        if (ConfigData.configFile.exists()) {
+        if (this.getConfigFile().exists()) {
             System.out.println("Loading from file...");
             configData = new ConfigData();
             configData = configData.readConfig(ConfigData.class);
@@ -172,4 +180,11 @@ public class CoreServer {
         this.getClients().remove(socket);
     }
 
+    public File getConfigFile() {
+        return configFile;
+    }
+
+    public static CoreServer getInstance() {
+        return instance;
+    }
 }
