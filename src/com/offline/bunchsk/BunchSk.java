@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -56,11 +57,14 @@ public class BunchSk extends JavaPlugin {
     private void loadConfig() {
 
         if (this.getConfigFile().exists()) {
-            System.out.println("Loading from file...");
+
+            System.out.println("█ Config » Loading data from config file");
             configData = new ConfigData();
             configData = configData.readConfig(ConfigData.class);
+
         } else {
-            System.out.println("Creating file...");
+
+            System.out.println("█ Client » Creating config file");
             configData = new ConfigData();
 
             try {
@@ -76,66 +80,72 @@ public class BunchSk extends JavaPlugin {
 
             configData.saveConfig();
         }
-        System.out.println("File loaded successfully");
+
+        System.out.println("█ Client » Config loaded successefully");
     }
     
     public void registerElements() throws IOException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        
-        int effcount = 0;
-        int exprcount = 0;
-        int evtcount = 0;
-        int condcount = 0;
 
-        System.out.println("BunchSk registering stuff");
-        JavaPlugin plugin = (JavaPlugin) getServer().getPluginManager().getPlugin("BunchSk");
-        Method getFileMethod = JavaPlugin.class.getDeclaredMethod("getFile");
-        getFileMethod.setAccessible(true);
-        File file = (File) getFileMethod.invoke(this);
+        int effectCount = 0,
+                expressionCount = 0,
+                eventCount = 0,
+                conditionCount = 0,
+                asd = 0;
+
+        System.out.println("█ BunchSK » Starting » Registering staff");
+
+        Method method = JavaPlugin.class.getDeclaredMethod("getFile");
+        method.setAccessible(true);
+        File file = (File) method.invoke(this);
         
         Set<Class<?>> classes = ClassFinder.getClasses(file, "com.offline.bunchsk");
         
         if (classes != null) {
 
-            for (Class c : classes) {
+            for (Class clazz : classes) {
 
-                if(c.isAnnotationPresent(RegisterOptions.class)) {
+                if(clazz.isAnnotationPresent(RegisterOptions.class)) {
 
-                    Annotation ann = c.getAnnotation(RegisterOptions.class);
-                    RegisterOptions ro = (RegisterOptions) ann;
-                    int asd = 1;
+                    Annotation annotation = clazz.getAnnotation(RegisterOptions.class);
 
-                    if (ro.PluginDepend()!="None" && Bukkit.getPluginManager().getPlugin(ro.PluginDepend()) == null)
+                    RegisterOptions registerOptions = (RegisterOptions) annotation;
+                    asd = 1;
+
+                    if (!Objects.equals(registerOptions.PluginDepend(), "None") && Bukkit.getPluginManager().getPlugin(registerOptions.PluginDepend()) == null)
                         asd = 0;
 
                     if (asd == 0) {
 
-                        switch (ro.RegType()) {
+                        switch (registerOptions.RegType()) {
 
                             case "EFFECT":
-                                Skript.registerEffect(c, ro.Syntaxes());
-                                effcount++;
+                                Skript.registerEffect(clazz, registerOptions.Syntaxes());
+                                effectCount++;
                                 break;
 
                             case "CONDITION":
-                                Skript.registerCondition(c, ro.Syntaxes());
-                                condcount++;
+                                Skript.registerCondition(clazz, registerOptions.Syntaxes());
+                                conditionCount++;
                                 break;
 
                             case "EVENT":
-	                            Skript.registerEvent(ro.Name(), SimpleEvent.class, c, ro.Syntaxes());
-		                        evtcount++;
+	                            Skript.registerEvent(registerOptions.Name(), SimpleEvent.class, clazz, registerOptions.Syntaxes());
+		                        eventCount++;
 		                        break;
 
 	                        case "EXPRESSION":
-	            	            Skript.registerExpression(c,ro.ExprClass(),ro.ExprType(),ro.Syntaxes());
-                                exprcount++;
+	            	            Skript.registerExpression(clazz, registerOptions.ExprClass(), registerOptions.ExprType(), registerOptions.Syntaxes());
+                                expressionCount++;
                                 break;
                         }
                     }
                 }    
             }
 
-            System.out.println("BunchSk successfully registered " + effcount + " effects, " + exprcount + " expressions, " + evtcount + " events, " + condcount + " conditions");
+            System.out.println("█ BunchSK » Registering » Effects: " + effectCount);
+            System.out.println("█ BunchSK » Registering » Expressions: " + expressionCount);
+            System.out.println("█ BunchSK » Registering » Events: " + eventCount);
+            System.out.println("█ BunchSK » Registering » Conditions: " + conditionCount);
         }
     }
 
