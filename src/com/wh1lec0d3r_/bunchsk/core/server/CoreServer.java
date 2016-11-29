@@ -6,150 +6,200 @@ import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class CoreServer {
 
-    static CoreServer instance;
+    private  static CoreServer coreServer;
 
     private File configFile = new File("config.json");
 
     private ConfigData configData;
     private ServerSocket serverSocket;
     private Map<Socket, ClientHandler> clients;
-    private HashMap<String, Object> vars = new HashMap<>();
+    private HashMap<String, Object> vars;
 
-    public Thread readConnectionsThread;
-    public Thread readConsoleThread;
-    private String value = "none";
+    public CoreServer() {
 
-    //test comment, for test push, test
-    public CoreServer(String[] args) {
+        System.out.println("");
 
-        instance = this;
+        System.out.println("████████████████████████████████████");
+        System.out.println("█────██─█─█─██─█────█─██─██───█─██─█");
+        System.out.println("█─██──█─█─█──█─█─██─█─██─██─███─█─██");
+        System.out.println("█────██─█─█─█──█─████────██───█──███");
+        System.out.println("█─██──█─█─█─██─█─██─█─██─████─█─█─██");
+        System.out.println("█────██───█─██─█────█─██─██───█─██─█");
+        System.out.println("████████████████████████████████████");
+
+        System.out.println("");
+
+        //vars
+        coreServer = this;
 
         this.clients = new HashMap<>();
+        this.vars = new HashMap<>();
 
-        System.out.println("Loading...");
-        System.out.println("Loading config...");
+        //config
+        System.out.println("█ Loading » Config");
         this.loadConfig();
-        System.out.println("Opening socket...");
-        this.openSocket(this.getConfigData().port);
-        System.out.println("Starting read connections...");
+
+        //opening socket
+        System.out.println("█ Opening » ServerSocket");
+        this.openSocket(this.getConfigData().getPort());
+
+        //Starting read connections thread
+        System.out.println("█ Starting » Thread » Read connections");
         this.startReadConnections();
-        //System.out.println("test :/");
+
+        //Starting read console thread
+        System.out.println("█ Starting » Thread » Read console");
         this.startReadConsole();
-        System.out.println("console reader started");
     }
 
 
 
     private void openSocket(int port) {
-        this.value = "opened";
         try {
             this.serverSocket = new ServerSocket(port);
-            System.out.println("Socket opened successfully");
+            System.out.println("█ Socket » Server successefully opened!");
         } catch (IOException e) {
-            System.out.println("Error on opening socket...");
+            System.out.println("█ Socket » Error on opening server.");
             e.printStackTrace();
         }
     }
 
     private void startReadConnections() {
 
-        this.readConnectionsThread = new Thread(() -> {
-           while (!this.getServerSocket().isClosed()) {
-               try {
-                   Socket socket = this.getServerSocket().accept();
+        Thread readConnectionsThread = new Thread(() -> {
 
-                   System.out.println("reading connection");
+            while (!this.getServerSocket().isClosed()) {
 
-                   ClientHandler clientHandler = new ClientHandler(socket, this);
+                try {
 
-                   this.clients.put(socket, clientHandler);
+                    Socket socket = this.getServerSocket().accept();
+                    System.out.println("█ Client » New client connected");
 
-                   //this.clients.put(socket, new ClientHandler(socket, instance));
+                    this.clients.put(socket, new ClientHandler(socket, this));
 
-                   Thread.sleep(10L);
-               } catch (IOException | InterruptedException ex) {
-                   ex.printStackTrace();
-               }
-           }
-        });
+                    Thread.sleep(10L);
 
-        this.readConnectionsThread.start();
-    }
+                } catch (IOException | InterruptedException ex) {
 
-    private void startReadConsole() {
-        this.readConsoleThread = new Thread(() -> {
-            Scanner scanner = new Scanner(System.in);
-
-            while (true) {
-                String line = scanner.nextLine();
-                if(line.length() != 0) {
-                    if(line.startsWith("/")) {
-                        switch (line) {
-                            case "/end":
-                                System.exit(0);
-                                break;
-                            case "/servers":
-                                int clientCount = 0;
-                                System.out.println("CLIENTS COUNT: " + this.getClients().size());
-                                //System.out.println("HASH: " + this.getClients().toString());
-                                for(ClientHandler clientHandler : this.getClients().values()) {
-                                    if(!clientHandler.isEnabled())
-                                        continue;
-                                    System.out.println("Clients: ");
-                                    System.out.println("    Client #" + clientCount + " Client name: " + clientHandler.getHandlerName() + " Client ip: " + clientHandler.getSocket().getInetAddress().getHostAddress());
-                                    //this.removeClientHandler(clientHandler);
-                                    clientCount++;
-                                }
-
-                                if(this.clients.size() == 0)
-                                    System.out.println("You are alone :(");
-                                break;
-                            case "saveConfig":
-                                this.configData.saveConfig();
-                                break;
-                            default:
-                                System.out.println("Unknown command");
-                                break;
-                        }
-                    }
+                    ex.printStackTrace();
                 }
-                //System.out.println(line);
             }
         });
 
-        this.readConsoleThread.start();
+        readConnectionsThread.start();
+    }
+
+    private void startReadConsole() {
+
+        Thread readConsoleThread = new Thread(() -> {
+
+            Scanner scanner = new Scanner(System.in);
+
+            while (scanner.hasNext()) {
+
+                String line = scanner.nextLine();
+                String[] args = line.split(" ");
+
+                if (args.length == 0)
+                    continue;
+
+                switch (args[0].toLowerCase()) {
+                    case "help":
+                        System.out.println("█ Command » Help command:");
+                        System.out.println("█   » Help - 'help'");
+                        System.out.println("█   » Shutdown core - 'end'");
+                        System.out.println("█   » List of clients - 'clients'");
+                        break;
+                    case "end":
+                        System.out.println("█ Command » Shutdown core!");
+                        System.exit(0);
+                        break;
+                    case "clients":
+                        if(args.length == 1) {
+                            System.out.println("█ Command » Help 'clients' command: ");
+                            System.out.println("█   » All clients - 'clients all'");
+                            System.out.println("█   » Connected clients - 'clients connected'");
+                            System.out.println("█   » Closed clients - 'clients closed'");
+                        }
+
+                        if(args.length > 1) {
+                            switch (args[1].toLowerCase()) {
+                                case "all":
+                                    System.out.println("█ Command » Client all:");
+                                    System.out.println("█   » Clients: " + this.getClients().size());
+                                    for(ClientHandler clientHandler : this.getClients().values()) {
+                                        System.out.println("█   » Client name: " + clientHandler.getHandlerName() + " Client IP: " + clientHandler.getSocket().getInetAddress().getHostAddress());
+                                    }
+                                    break;
+                                case "connected":
+                                    List<ClientHandler> connected = new LinkedList<>();
+
+                                    this.getClients().entrySet().stream().filter(socketClientHandlerEntry -> socketClientHandlerEntry.getValue().isEnabled()).forEach(socketClientHandlerEntry -> connected.add(socketClientHandlerEntry.getValue()));
+
+                                    System.out.println("█ Command » Client connected:");
+                                    System.out.println("█   » Clients: " + connected.size());
+                                    for(ClientHandler clientHandler : connected) {
+                                        System.out.println("█   » Client name: " + clientHandler.getHandlerName() + " Client IP: " + clientHandler.getSocket().getInetAddress().getHostAddress());
+                                    }
+                                    break;
+                                case "closed":
+                                    List<ClientHandler> closed = new LinkedList<>();
+
+                                    this.getClients().entrySet().stream().filter(socketClientHandlerEntry -> !socketClientHandlerEntry.getValue().isEnabled()).forEach(socketClientHandlerEntry -> closed.add(socketClientHandlerEntry.getValue()));
+
+                                    System.out.println("█ Command » Client connected:");
+                                    System.out.println("█   » Clients: " + closed.size());
+                                    for(ClientHandler clientHandler : closed) {
+                                        System.out.println("█   » Client name: " + clientHandler.getName() + " Client IP: " + clientHandler.getSocket().getInetAddress().getHostAddress());
+                                    }
+                                    break;
+                                default:
+                                    System.out.println("█ Command » Help 'clients' command: ");
+                                    System.out.println("█   » All clients - 'clients all'");
+                                    System.out.println("█   » Connected clients - 'clients connected'");
+                                    System.out.println("█   » Closed clients - 'clients closed'");
+                                    break;
+                            }
+                        }
+
+                        break;
+                    default:
+                        System.out.println("█ Command » Unknown command, type 'help' for help!");
+                        break;
+                }
+            }
+        });
+
+        readConsoleThread.start();
     }
 
     private void loadConfig() {
 
         if (this.getConfigFile().exists()) {
-            System.out.println("Loading from file...");
+            System.out.println("█ Config » Loading data from config file");
             configData = new ConfigData();
             configData = configData.readConfig(ConfigData.class);
         } else {
-            System.out.println("Creating file...");
+            System.out.println("█ Config » Creating config file");
             configData = new ConfigData();
             configData.saveConfig();
         }
-        System.out.println("File loaded successfully");
+        System.out.println("█ Config » Config loaded successefully");
     }
 
     public ConfigData getConfigData() {
         return configData;
     }
 
-    public ServerSocket getServerSocket() {
+    private ServerSocket getServerSocket() {
         return serverSocket;
     }
 
-    public Map<Socket, ClientHandler> getClients() {
+    private Map<Socket, ClientHandler> getClients() {
         return this.clients;
     }
 
@@ -157,7 +207,7 @@ public class CoreServer {
         return this.getClients().get(socket);
     }
 
-    public HashMap<String, Object> getVars() {
+    private HashMap<String, Object> getVars() {
         return vars;
     }
 
@@ -169,8 +219,8 @@ public class CoreServer {
         this.getVars().put(key, value);
     }
 
-    public HashMap<String, Object> getConfigVars() {
-        return this.getConfigData().vars;
+    private HashMap<String, Object> getConfigVars() {
+        return this.getConfigData().getVars();
     }
 
     public Object getConfigVar(String key) {
@@ -182,29 +232,27 @@ public class CoreServer {
     }
 
     public void removeClientHandler(ClientHandler clientHandler) {
-        //System.out.println("HASH: " + this.getClients().toString());
-        System.out.println("Clients: " + this.clients.size());
-        System.out.println("value: " + this.value);
 
         clientHandler.setEnabled(false);
 
         try {
+
             clientHandler.getSocket().close();
         } catch (IOException e) {
+
             e.printStackTrace();
         }
 
         if(clientHandler.isAlive())
             clientHandler.stop();
 
-        System.out.println("Clients: " + this.clients.size());
     }
 
     public File getConfigFile() {
-        return configFile;
+        return this.configFile;
     }
 
-    public static CoreServer getInstance() {
-        return instance;
+    public static CoreServer getCoreServer() {
+        return coreServer;
     }
 }
