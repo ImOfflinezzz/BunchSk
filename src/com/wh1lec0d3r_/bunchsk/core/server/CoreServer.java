@@ -154,7 +154,7 @@ public class CoreServer {
                                     System.out.println("█ Command » Client connected:");
                                     System.out.println("█   » Clients: " + closed.size());
                                     for(ClientHandler clientHandler : closed) {
-                                        System.out.println("█   » Client name: " + clientHandler.getName() + " Client IP: " + clientHandler.getSocket().getInetAddress().getHostAddress());
+                                        System.out.println("█   » Client name: " + clientHandler.getHandlerName() + " Client IP: " + clientHandler.getSocket().getInetAddress().getHostAddress());
                                     }
                                     break;
                                 default:

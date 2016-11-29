@@ -15,57 +15,68 @@ public class ClientHandler extends Thread {
     private CoreServer coreServer;
 
     private String name;
-
     private boolean enabled;
 
-    public ClientHandler(Socket socket, CoreServer coreServer) {
-        System.out.println("Creating client");
+    ClientHandler(Socket socket, CoreServer coreServer) {
+
+        System.out.println("█ Client » Creating");
+
+        //vars
         this.socket = socket;
         this.coreServer = coreServer;
-        System.out.println("Created client");
-        System.out.println("Starting read data");
-        //coreServer.readConsoleThread.stop();
-        //this.start();
-        this.readData();
+
+        System.out.println("█ Client » Authorizing");
+        this.authorize();
     }
 
-    private void readData() {
+    private void authorize() {
+
+        DataOutputStream dataOutputStream;
+        DataInputStream dataInputStream;
+
         try {
-            DataInputStream dataInputStream = new DataInputStream(this.getSocket().getInputStream());
+            dataInputStream = new DataInputStream(this.getSocket().getInputStream());
+            dataOutputStream = new DataOutputStream(this.getSocket().getOutputStream());
+
             String name = dataInputStream.readUTF();
             String password = dataInputStream.readUTF();
             int hashId = dataInputStream.readInt();
 
             this.name = name;
-            if(Hash.validate(Hash.getEnumById(hashId), password, this.getCoreServer().getConfigData().password)) {
+            boolean auth = Hash.validate(Hash.getEnumById(hashId), password, this.getCoreServer().getConfigData().getPassword());
+
+            if(auth) {
+
+                System.out.println("█ Client » " + this.getHandlerName() + " » Authorized");
+                System.out.println("█ Client » " + this.getHandlerName() + " » Starting » Thread » Reading data");
                 this.start();
-                this.sendData(true);
+
+                dataOutputStream.writeBoolean(true);
+                dataOutputStream.flush();
+
             } else {
-                System.out.println("logout");
 
-                this.sendData(false);
-                this.getCoreServer().removeClientHandler(this);
+                System.out.println("█ Client » " + this.getHandlerName() + " » Error on authorize: Password don't match");
+
+                dataOutputStream.writeBoolean(false);
+                dataOutputStream.flush();
             }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
 
-    private void sendData(boolean b) {
-        try {
-            DataOutputStream dataOutputStream = new DataOutputStream(this.getSocket().getOutputStream());
-            dataOutputStream.writeBoolean(b);
-            //dataOutputStream.writeUTF();
         } catch (IOException ex) {
+
+            System.out.println("█ Client » " + this.getHandlerName() + " » Error on authorize: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
 
     public void run() {
-        System.out.println("succesefully");
+
         while (!this.getSocket().isClosed()) {
+
             try {
+
                 DataInputStream dataInputStream = new DataInputStream(this.getSocket().getInputStream());
+
                 short id = dataInputStream.readShort();
 
                 YPacket yPacket = PacketManager.getPacket(id);
@@ -77,10 +88,11 @@ public class ClientHandler extends Thread {
                 }
 
                 Thread.sleep(10L);
+
             } catch (IOException | InterruptedException e) {
-                System.out.println("Error on read data");
+
+                System.out.println("█ Client » " + this.getHandlerName() + " » Error on reading packet: " + e.getMessage());
                 this.getCoreServer().removeClientHandler(this);
-                //this.stop();
             }
         }
     }
