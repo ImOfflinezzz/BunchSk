@@ -65,7 +65,6 @@ public class ClientHandler extends Thread {
         } catch (IOException ex) {
 
             System.out.println("█ Client » " + this.getHandlerName() + " » Error on authorize: " + ex.getMessage());
-            ex.printStackTrace();
         }
     }
 
