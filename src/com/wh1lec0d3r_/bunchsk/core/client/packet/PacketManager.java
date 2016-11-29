@@ -7,21 +7,19 @@ public class PacketManager {
 
     private static Map<Short, Class<? extends YPacket>> packets = new HashMap<>();
 
-    static
-    {
+    static {
         //todo add some packets
     }
 
-    public static YPacket getPacket(short id)
-    {
-        try
-        {
+    public static YPacket getPacket(short id) {
+        try {
+
             return packets.get(id).newInstance();
-        }
-        catch (InstantiationException | IllegalAccessException e)
-        {
+
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 }

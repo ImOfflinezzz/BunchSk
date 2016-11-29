@@ -6,9 +6,6 @@ import com.wh1lec0d3r_.bunchsk.core.api.config.GsonUtils;
 import com.wh1lec0d3r_.bunchsk.core.api.config.JsonSerializable;
 import com.wh1lec0d3r_.bunchsk.core.api.utils.IOUtils;
 
-import java.io.File;
-import java.util.HashMap;
-
 public class ConfigData implements JsonSerializable {
 
     //vars
@@ -24,8 +21,7 @@ public class ConfigData implements JsonSerializable {
 
 
 
-    //utils
-    public ConfigData readConfig(Class classOfT) {
+    public ConfigData readConfig(Class<ConfigData> classOfT) {
         return (ConfigData) IOUtils.readFromFile(BunchSk.getBunchSk().getConfigFile(), classOfT, GsonUtils.getGson());
     }
 

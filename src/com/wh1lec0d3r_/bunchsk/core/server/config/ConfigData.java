@@ -6,33 +6,40 @@ import com.wh1lec0d3r_.bunchsk.core.api.config.JsonSerializable;
 import com.wh1lec0d3r_.bunchsk.core.api.utils.IOUtils;
 import com.wh1lec0d3r_.bunchsk.core.server.CoreServer;
 
-import java.io.File;
 import java.util.HashMap;
 
 public class ConfigData implements JsonSerializable {
 
-    //file
-    //public static File configFile = new File("config.json");
-
     //vars
     @Expose
-    public String
+    private String
         password = "password";
 
     @Expose
-    public int
+    private int
         port = 6000;
 
     @Expose
-    public HashMap<String, Object> vars = new HashMap<>();
+    private HashMap<String, Object> vars = new HashMap<>();
 
 
-    //utils
-    public ConfigData readConfig(Class classOfT) {
-        return (ConfigData) IOUtils.readFromFile(CoreServer.getInstance().getConfigFile(), classOfT, GsonUtils.getGson());
+    public ConfigData readConfig(Class<ConfigData> classOfT) {
+        return (ConfigData) IOUtils.readFromFile(CoreServer.getCoreServer().getConfigFile(), classOfT, GsonUtils.getGson());
     }
 
     public void saveConfig() {
-        IOUtils.writeToFile(CoreServer.getInstance().getConfigFile(), this, GsonUtils.getGson());
+        IOUtils.writeToFile(CoreServer.getCoreServer().getConfigFile(), this, GsonUtils.getGson());
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public HashMap<String, Object> getVars() {
+        return vars;
     }
 }

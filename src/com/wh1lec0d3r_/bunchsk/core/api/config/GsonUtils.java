@@ -8,13 +8,15 @@ public class GsonUtils {
     private static Gson gson;
 
     public static Gson getGson() {
+
         if(gson == null)
             gson = getGsonBuilder().create();
 
         return gson;
     }
 
-    public static GsonBuilder getGsonBuilder() {
+    private static GsonBuilder getGsonBuilder() {
+
         return new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation()
                 .registerTypeAdapter(JsonSerializable.class, new PropertyBasesInterfaceMarshal());
     }

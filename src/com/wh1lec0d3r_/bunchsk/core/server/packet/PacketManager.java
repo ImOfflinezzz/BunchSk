@@ -5,23 +5,21 @@ import java.util.Map;
 
 public class PacketManager {
 
-    public static Map<Short, Class<? extends YPacket>> packets = new HashMap<>();
+    private static Map<Short, Class<? extends YPacket>> packets = new HashMap<>();
 
-    static
-    {
-        //todo add some packets
+    static {
     }
 
-    public static YPacket getPacket(short id)
-    {
-        try
-        {
+    public static YPacket getPacket(short id) {
+
+        try {
+
             return packets.get(id).newInstance();
-        }
-        catch (InstantiationException | IllegalAccessException e)
-        {
+
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 }

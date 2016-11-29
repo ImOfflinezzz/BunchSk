@@ -31,17 +31,22 @@ public class Hash {
     }
 
     public static HashEnum getEnumById(int id) {
+
         for(HashEnum hashEnum : HashEnum.values()) {
+
             if(hashEnum.getId() == id)
                 return hashEnum;
         }
+
         return null;
     }
 
     public static String getHash(HashEnum hashEnum, String toHash) {
+
         String hash = "";
 
         try {
+
             MessageDigest messageDigest = MessageDigest.getInstance(hashEnum.getName());
             messageDigest.update(toHash.getBytes());
 
@@ -50,12 +55,14 @@ public class Hash {
             StringBuilder stringBuilder = new StringBuilder();
 
             for(byte aByte : bytes) {
+
                 stringBuilder.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
             }
 
             hash = stringBuilder.toString();
 
         } catch (NoSuchAlgorithmException ex) {
+
             ex.printStackTrace();
         }
 
@@ -63,6 +70,7 @@ public class Hash {
     }
 
     public static boolean validate(HashEnum hashEnum, String first, String second) {
+
         return getHash(hashEnum, first).equals(getHash(hashEnum, second));
     }
 }
