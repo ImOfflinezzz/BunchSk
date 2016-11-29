@@ -59,7 +59,6 @@ public class Hash {
             ex.printStackTrace();
         }
 
-        System.out.println(hash);
         return hash;
     }
 
