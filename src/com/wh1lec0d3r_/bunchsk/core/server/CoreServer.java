@@ -8,6 +8,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Scanner;
 
 public class CoreServer {
@@ -18,16 +19,19 @@ public class CoreServer {
 
     private ConfigData configData;
     private ServerSocket serverSocket;
-    private HashMap<Socket, ClientHandler> clients = new HashMap<>();
+    private Map<Socket, ClientHandler> clients;
     private HashMap<String, Object> vars = new HashMap<>();
 
-    private Thread readConnectionsThread;
-    private Thread readConsoleThread;
+    public Thread readConnectionsThread;
+    public Thread readConsoleThread;
+    private String value = "none";
 
     //test comment, for test push, test
     public CoreServer(String[] args) {
 
         instance = this;
+
+        this.clients = new HashMap<>();
 
         System.out.println("Loading...");
         System.out.println("Loading config...");
@@ -36,7 +40,7 @@ public class CoreServer {
         this.openSocket(this.getConfigData().port);
         System.out.println("Starting read connections...");
         this.startReadConnections();
-        System.out.println("test :/");
+        //System.out.println("test :/");
         this.startReadConsole();
         System.out.println("console reader started");
     }
@@ -44,6 +48,7 @@ public class CoreServer {
 
 
     private void openSocket(int port) {
+        this.value = "opened";
         try {
             this.serverSocket = new ServerSocket(port);
             System.out.println("Socket opened successfully");
@@ -62,7 +67,11 @@ public class CoreServer {
 
                    System.out.println("reading connection");
 
-                   this.clients.put(socket, new ClientHandler(socket, this));
+                   ClientHandler clientHandler = new ClientHandler(socket, this);
+
+                   this.clients.put(socket, clientHandler);
+
+                   //this.clients.put(socket, new ClientHandler(socket, instance));
 
                    Thread.sleep(10L);
                } catch (IOException | InterruptedException ex) {
@@ -88,9 +97,14 @@ public class CoreServer {
                                 break;
                             case "/servers":
                                 int clientCount = 0;
-                                for(ClientHandler clientHandler : this.clients.values()) {
+                                System.out.println("CLIENTS COUNT: " + this.getClients().size());
+                                //System.out.println("HASH: " + this.getClients().toString());
+                                for(ClientHandler clientHandler : this.getClients().values()) {
+                                    if(!clientHandler.isEnabled())
+                                        continue;
                                     System.out.println("Clients: ");
                                     System.out.println("    Client #" + clientCount + " Client name: " + clientHandler.getHandlerName() + " Client ip: " + clientHandler.getSocket().getInetAddress().getHostAddress());
+                                    //this.removeClientHandler(clientHandler);
                                     clientCount++;
                                 }
 
@@ -135,8 +149,8 @@ public class CoreServer {
         return serverSocket;
     }
 
-    public HashMap<Socket, ClientHandler> getClients() {
-        return clients;
+    public Map<Socket, ClientHandler> getClients() {
+        return this.clients;
     }
 
     public ClientHandler getClient(Socket socket) {
@@ -167,17 +181,23 @@ public class CoreServer {
         this.getConfigVars().put(key, value);
     }
 
-    public void removeClient(ClientHandler clientHandler) {
-        Iterator<Socket> clientsIterator = this.getClients().keySet().iterator();
+    public void removeClientHandler(ClientHandler clientHandler) {
+        //System.out.println("HASH: " + this.getClients().toString());
+        System.out.println("Clients: " + this.clients.size());
+        System.out.println("value: " + this.value);
 
-        while (clientsIterator.hasNext()) {
-            Socket socket = clientsIterator.next();
-            this.getClients().remove(socket);
+        clientHandler.setEnabled(false);
+
+        try {
+            clientHandler.getSocket().close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-    }
 
-    public void removeClient(Socket socket) {
-        this.getClients().remove(socket);
+        if(clientHandler.isAlive())
+            clientHandler.stop();
+
+        System.out.println("Clients: " + this.clients.size());
     }
 
     public File getConfigFile() {

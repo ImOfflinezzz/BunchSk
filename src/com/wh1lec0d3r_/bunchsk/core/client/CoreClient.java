@@ -76,14 +76,13 @@ public class CoreClient extends Thread {
                 }
                 Thread.sleep(10L);
             } catch (IOException | InterruptedException ex) {
-                this.stop();
                 try {
                     this.getSocket().close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                ex.printStackTrace();
 
+                this.stop();
             }
         }
     }

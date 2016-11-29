@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class PacketManager {
 
-    public static Map<Short, Class<? extends YPacket>> packets = new HashMap<>();
+    private static Map<Short, Class<? extends YPacket>> packets = new HashMap<>();
 
     static
     {

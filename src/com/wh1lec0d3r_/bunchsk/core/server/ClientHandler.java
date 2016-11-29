@@ -16,12 +16,15 @@ public class ClientHandler extends Thread {
 
     private String name;
 
+    private boolean enabled;
+
     public ClientHandler(Socket socket, CoreServer coreServer) {
         System.out.println("Creating client");
         this.socket = socket;
         this.coreServer = coreServer;
         System.out.println("Created client");
         System.out.println("Starting read data");
+        //coreServer.readConsoleThread.stop();
         //this.start();
         this.readData();
     }
@@ -39,11 +42,9 @@ public class ClientHandler extends Thread {
                 this.sendData(true);
             } else {
                 System.out.println("logout");
-                this.getCoreServer().removeClient(this);
 
                 this.sendData(false);
-
-                this.getSocket().close();
+                this.getCoreServer().removeClientHandler(this);
             }
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -78,9 +79,8 @@ public class ClientHandler extends Thread {
                 Thread.sleep(10L);
             } catch (IOException | InterruptedException e) {
                 System.out.println("Error on read data");
-                this.stop();
-                this.coreServer.removeClient(this);
-                e.printStackTrace();
+                this.getCoreServer().removeClientHandler(this);
+                //this.stop();
             }
         }
     }
@@ -97,4 +97,11 @@ public class ClientHandler extends Thread {
         return name;
     }
 
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
 }
