@@ -91,7 +91,7 @@ public class BunchSk extends JavaPlugin {
                 eventCount = 0,
                 conditionCount = 0,
                 asd = 0;
-
+	DocsGenerator.createDocs();
         System.out.println("█ BunchSK » Starting » Registering staff");
 
         Method method = JavaPlugin.class.getDeclaredMethod("getFile");
@@ -121,31 +121,35 @@ public class BunchSk extends JavaPlugin {
                             case "EFFECT":
                                 Skript.registerEffect(clazz, registerOptions.Syntaxes());
                                 effectCount++;
+				DocsGenerator.writeDocs(ro.Name(),ro.Syntaxes(),"Effect");
                                 break;
 
                             case "CONDITION":
                                 Skript.registerCondition(clazz, registerOptions.Syntaxes());
                                 conditionCount++;
+				DocsGenerator.writeDocs(ro.Name(),ro.Syntaxes(),"Condition");
                                 break;
 
                             case "EVENT":
-	                            Skript.registerEvent(registerOptions.Name(), SimpleEvent.class, clazz, registerOptions.Syntaxes());
-		                        eventCount++;
-		                        break;
+	                        Skript.registerEvent(registerOptions.Name(), SimpleEvent.class, clazz, registerOptions.Syntaxes());
+		                eventCount++;
+				DocsGenerator.writeDocs(ro.Name(),ro.Syntaxes(),"Event");	
+		                break;
 
-	                        case "EXPRESSION":
-	            	            Skript.registerExpression(clazz, registerOptions.ExprClass(), registerOptions.ExprType(), registerOptions.Syntaxes());
+	                    case "EXPRESSION":
+	            	        Skript.registerExpression(clazz, registerOptions.ExprClass(), registerOptions.ExprType(), registerOptions.Syntaxes());
                                 expressionCount++;
+				DocsGenerator.writeDocs(ro.Name(),ro.Syntaxes(),"Expression");
                                 break;
                         }
                     }
                 }    
             }
 
-            System.out.println("█ BunchSK » Registering » Effects: " + effectCount);
-            System.out.println("█ BunchSK » Registering » Expressions: " + expressionCount);
-            System.out.println("█ BunchSK » Registering » Events: " + eventCount);
-            System.out.println("█ BunchSK » Registering » Conditions: " + conditionCount);
+            System.out.println("█ BunchSK » Register » Effects: " + effectCount);
+            System.out.println("█ BunchSK » Register » Expressions: " + expressionCount);
+            System.out.println("█ BunchSK » Register » Events: " + eventCount);
+            System.out.println("█ BunchSK » Register » Conditions: " + conditionCount);
         }
     }
 
