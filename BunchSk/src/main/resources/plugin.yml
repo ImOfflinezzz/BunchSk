@@ -1,0 +1,5 @@
+main: com.offline.bunchsk.BunchSk
+name: BunchSk
+version: 1.8
+author: ImOffline
+softdepend: [Skript]
